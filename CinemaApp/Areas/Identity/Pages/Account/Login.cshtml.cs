@@ -47,7 +47,7 @@ namespace CinemaApp.Web.Areas.Identity.Pages.Account
                 return Page();
             }
 
-            ReturnUrl = returnUrl ?? Url.Content("~");
+            ReturnUrl = returnUrl ?? Url.Content("~/");
 
             if (signInManager.IsSignedIn(User))
             {

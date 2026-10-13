@@ -42,7 +42,7 @@ namespace CinemaApp.Web.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnGet(string? returnUrl = null)
         {
-            ReturnUrl = returnUrl ?? Url.Content("~");
+            ReturnUrl = returnUrl ?? Url.Content("~/");
 
             if (signInManager.IsSignedIn(User))
             {

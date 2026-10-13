@@ -22,6 +22,11 @@ namespace CinemaApp.Web
             
             builder.Services.AddControllersWithViews();
 
+            builder.Services.Configure<IdentityOptions>(options =>
+            {
+                ConfigureIdentityOptions(builder.Configuration, options);
+            });
+
             WebApplication app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -54,25 +59,25 @@ namespace CinemaApp.Web
         private static void ConfigureIdentityOptions(ConfigurationManager configuration, IdentityOptions options)
         {
             // Password settings
-            options.Password.RequireDigit = configuration.GetValue<bool>("Password:RequireDigit");
-            options.Password.RequireLowercase = configuration.GetValue<bool>("Password:RequireLowercase");
-            options.Password.RequireNonAlphanumeric = configuration.GetValue<bool>("Password:RequireNonAlphanumeric");
-            options.Password.RequireUppercase = configuration.GetValue<bool>("Password:RequireUppercase");
-            options.Password.RequiredLength = configuration.GetValue<int>("Password:RequiredLength");
-            options.Password.RequiredUniqueChars = configuration.GetValue<int>("Password:RequiredUniqueChars")  ;
+            options.Password.RequireDigit = configuration.GetValue<bool>("Identity:Password:RequireDigit");
+            options.Password.RequireLowercase = configuration.GetValue<bool>("Identity:Password:RequireLowercase");
+            options.Password.RequireNonAlphanumeric = configuration.GetValue<bool>("Identity:Password:RequireNonAlphanumeric");
+            options.Password.RequireUppercase = configuration.GetValue<bool>("Identity:Password:RequireUppercase");
+            options.Password.RequiredLength = configuration.GetValue<int>("Identity:Password:RequiredLength");
+            options.Password.RequiredUniqueChars = configuration.GetValue<int>("Identity:Password:RequiredUniqueChars")  ;
 
             //  Sign-in settings
-            options.SignIn.RequireConfirmedEmail = configuration.GetValue<bool>("SignIn:RequireConfirmedEmail");
-            options.SignIn.RequireConfirmedPhoneNumber = configuration.GetValue<bool>("SignIn:RequireConfirmedPhoneNumber");
-            options.SignIn.RequireConfirmedAccount = configuration.GetValue<bool>("SignIn:RequireConfirmedAccount");
+            options.SignIn.RequireConfirmedEmail = configuration.GetValue<bool>("Identity:SignIn:RequireConfirmedEmail");
+            options.SignIn.RequireConfirmedPhoneNumber = configuration.GetValue<bool>("Identity:SignIn:RequireConfirmedPhoneNumber");
+            options.SignIn.RequireConfirmedAccount = configuration.GetValue<bool>("Identity:SignIn:RequireConfirmedAccount");
 
             // Lockout settings
-            options.Lockout.DefaultLockoutTimeSpan = configuration.GetValue<TimeSpan>("Lockout:DefaultLockoutTimeSpan");
-            options.Lockout.MaxFailedAccessAttempts = configuration.GetValue<int>("Lockout:MaxFailedAccessAttempts");
-            options.Lockout.AllowedForNewUsers = configuration.GetValue<bool>("Lockout:AllowedForNewUsers");
+            options.Lockout.DefaultLockoutTimeSpan = configuration.GetValue<TimeSpan>("Identity:Lockout:DefaultLockoutTimeSpan");
+            options.Lockout.MaxFailedAccessAttempts = configuration.GetValue<int>("Identity:Lockout:MaxFailedAccessAttempts");
+            options.Lockout.AllowedForNewUsers = configuration.GetValue<bool>("Identity:Lockout:AllowedForNewUsers");
 
             // User settings
-            options.User.RequireUniqueEmail = configuration.GetValue<bool>("User:RequireUniqueEmail");
+            options.User.RequireUniqueEmail = configuration.GetValue<bool>("Identity:User:RequireUniqueEmail");
         }
     }
 }

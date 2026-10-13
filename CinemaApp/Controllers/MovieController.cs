@@ -15,9 +15,12 @@ namespace CinemaApp.Web.Controllers
         }
 
         [AllowAnonymous]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View(new List<AllMoviesIndexViewModel>());
+            IEnumerable<AllMoviesIndexViewModel> allMovies = await movieService
+                .GetAllMoviesOrderedByTitleAsync();
+
+            return View(allMovies);
         }
     }
 }

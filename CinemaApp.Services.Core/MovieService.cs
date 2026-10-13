@@ -27,10 +27,10 @@ namespace CinemaApp.Services.Core
                     Director = m.Director,
                     Genre = m.Genre,
                     ImageUrl = m.ImageUrl ?? DefaultImageUrl,
-                    ReleaseDate = m.ReleaseDate.ToString(DefaultDateFormat, CultureInfo.InvariantCulture)
+                    ReleaseDate = m.ReleaseDate.ToString(DefaultDateFormat)
                 })
                 .OrderBy(m => m.Title)
-                .ThenBy(m => m.ReleaseDate)
+                .ThenBy(m => m.Genre)
                 .ToListAsync();
 
             return allMovies;

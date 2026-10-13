@@ -8,20 +8,17 @@ namespace CinemaApp.Web.Areas.Identity.Pages.Account
     [AllowAnonymous]
     public class LogoutModel : PageModel
     {
-        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly SignInManager<IdentityUser> signInManager;
 
         public LogoutModel(SignInManager<IdentityUser> signInManager)
         {
-            _signInManager = signInManager;
-        }
-
-        public void OnGet()
-        {
+            this.signInManager = signInManager;
         }
 
         public async Task<IActionResult> OnPost(string? returnUrl = null)
         {
-            await _signInManager.SignOutAsync();
+            await signInManager.SignOutAsync();
+
             if (returnUrl != null)
             {
                 return LocalRedirect(returnUrl);

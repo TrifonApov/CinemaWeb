@@ -54,7 +54,7 @@ namespace CinemaApp.Web.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnPostAsync(string? returnUrl = null)
         {
-            returnUrl ??= Url.Content("~");
+            ReturnUrl = returnUrl ?? Url.Content("~/");
 
             if (!ModelState.IsValid)
             {
@@ -71,7 +71,7 @@ namespace CinemaApp.Web.Areas.Identity.Pages.Account
             if (result.Succeeded)
             {
                 await signInManager.SignInAsync(user, isPersistent: false);
-                return LocalRedirect(returnUrl);
+                return LocalRedirect(ReturnUrl);
             }
 
             foreach (var error in result.Errors)

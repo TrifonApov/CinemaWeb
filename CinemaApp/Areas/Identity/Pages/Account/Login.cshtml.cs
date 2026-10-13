@@ -64,7 +64,7 @@ namespace CinemaApp.Web.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnPostAsync(string? returnUrl = null)
         {
-            returnUrl ??= Url.Content("~");
+            ReturnUrl = returnUrl ?? Url.Content("~/");
 
             if (!ModelState.IsValid)
             {
@@ -75,16 +75,18 @@ namespace CinemaApp.Web.Areas.Identity.Pages.Account
 
             if (result.Succeeded)
             {
-                return LocalRedirect(returnUrl);
+                return LocalRedirect(ReturnUrl);
             }
 
             if (result.IsLockedOut)
             {
                 ModelState.AddModelError(string.Empty, $"User account {Input.Email} is locked out.");
+                
                 return Page();
             }
 
             ModelState.AddModelError(string.Empty, $"Invalid login attempt for user {Input.Email}.");
+            
             return Page();
         }
     }

@@ -11,6 +11,6 @@
 
         public string ImageUrl { get; set; } = null!;
 
-        public DateTime ReleaseDate { get; set; }
+        public string ReleaseDate { get; set; } = null!;
     }
 }

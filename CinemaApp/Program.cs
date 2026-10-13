@@ -1,8 +1,10 @@
 namespace CinemaApp.Web
 {
-    using CinemaApp.Data;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.EntityFrameworkCore;
+    using CinemaApp.Data;
+    using CinemaApp.Services.Core;
+    using CinemaApp.Services.Core.Contracts;
     public class Program
     {
         public static void Main(string[] args)
@@ -16,6 +18,8 @@ namespace CinemaApp.Web
                 options.UseSqlServer(connectionString));
             
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+
+            builder.Services.AddScoped<IMovieService, MovieService>();
 
             builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<CinemaAppDbContext>();

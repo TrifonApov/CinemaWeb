@@ -1,0 +1,14 @@
+@page
+@model CinemaApp.Web.Areas.Identity.Pages.Account.LogoutModel
+@{
+    ViewData["Title"] = "Logout";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<p>You will be signed out.</p>
+
+<form method="post">
+    <button type="submit" class="btn btn-danger">Logout</button>
+    <a asp-area="Identity" asp-page="/Account/Login" class="btn btn-link">Cancel</a>
+</form>

@@ -50,7 +50,6 @@ namespace CinemaApp.Data.Migrations
                         .HasComment("Movie Genre");
 
                     b.Property<string>("ImageUrl")
-                        .IsRequired()
                         .HasMaxLength(2048)
                         .HasColumnType("nvarchar(2048)");
 

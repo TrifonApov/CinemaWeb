@@ -58,6 +58,8 @@ namespace CinemaApp.Web
                 pattern: "{controller=Home}/{action=Index}/{id?}");
             app.MapRazorPages();
 
+            app.UseStatusCodePagesWithRedirects("/Home/Error");
+
             app.Run();
         }
         private static void ConfigureIdentityOptions(ConfigurationManager configuration, IdentityOptions options)

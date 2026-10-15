@@ -5,6 +5,9 @@ namespace CinemaApp.Web
     using CinemaApp.Data;
     using CinemaApp.Services.Core;
     using CinemaApp.Services.Core.Contracts;
+    using CinemaApp.Data.Repository.Contracts;
+    using CinemaApp.Data.Repository;
+
     public class Program
     {
         public static void Main(string[] args)
@@ -12,15 +15,19 @@ namespace CinemaApp.Web
             WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-            string? connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+            string? connectionString = builder
+                .Configuration
+                .GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
             
             builder.Services.AddDbContext<CinemaAppDbContext>(options =>
                 options.UseSqlServer(connectionString));
             
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
+            builder.Services.AddScoped<IMovieRepository, MovieRepository>();
+           
             builder.Services.AddScoped<IMovieService, MovieService>();
-
+                        
             builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<CinemaAppDbContext>();
             

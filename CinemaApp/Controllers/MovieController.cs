@@ -31,9 +31,14 @@ namespace CinemaApp.Web.Controllers
         [HttpGet]
         [AllowAnonymous]
         public async Task<IActionResult> Details(Guid id)
-        { 
+        {
+            if (id == Guid.Empty)
+            {
+                return BadRequest();
+            }
+
             MovieDetailsViewModel? movie = await movieService.GetMovieDetailsByIdAsync(id);
-            
+
             if (movie == null)
             {
                 return NotFound();
@@ -43,7 +48,7 @@ namespace CinemaApp.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult Create()  
+        public IActionResult Create()
         {
             return View();
         }
@@ -60,7 +65,7 @@ namespace CinemaApp.Web.Controllers
             {
                 await movieService.CreateMovieAsync(movieModel);
             }
-            catch (DbEntityCreatePersistFailureException exception)
+            catch (DbEntityPersistFailureException exception)
             {
                 logger.LogError(exception, CreateMovieFailureMessage);
 
@@ -76,6 +81,61 @@ namespace CinemaApp.Web.Controllers
             }
 
             return RedirectToAction(nameof(Index));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> EditAsync(Guid id)
+        {
+            if (id == Guid.Empty)
+            {
+                return BadRequest();
+            }
+
+            MovieFormViewModel? movie = await movieService
+                .GetMovieFormModelByIdAsync(id);
+            if (movie == null)
+            {
+                return NotFound();
+            }
+
+            return View(movie);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditAsync([FromRoute] Guid id, MovieFormViewModel movieModel)
+        {
+            if (id == Guid.Empty)
+            {
+                return BadRequest();
+            }
+
+            if (!await movieService.ExistsByIdAsync(id))
+            {
+                return NotFound();
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return ViewBag(movieModel);
+            }
+
+            try
+            {
+                await movieService.EditMovieAsync(id, movieModel);
+            }
+            catch (EntityNotFoundException exception)
+            {
+                return NotFound();
+            }
+            catch (DbEntityPersistFailureException exception)
+            {
+                logger.LogInformation(exception, EditMovieFailureMessage);
+                Console.WriteLine(exception);
+
+                return View(movieModel);
+            }
+
+            return RedirectToAction(nameof(Details), new { id });
         }
     }
 }

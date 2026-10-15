@@ -5,6 +5,8 @@ namespace CinemaApp.Web.ViewModels.Movie
 {
     public class MovieFormViewModel
     {
+        public Guid Id { get; set; }
+
         [Required(ErrorMessage = TitleRequiredMessage)]
         [MinLength(TitleMinLength, ErrorMessage = TitleMinLengthMessage)]
         [MaxLength(TitleMaxLength, ErrorMessage = TitleMaxLengthMessage)]
@@ -32,7 +34,6 @@ namespace CinemaApp.Web.ViewModels.Movie
         [MaxLength(DescriptionMaxLength, ErrorMessage = DescriptionMaxLengthMessage)]
         public string Description { get; set; } = null!;
 
-        [Url]
         [MaxLength(ImageUrlMaxLength, ErrorMessage = ImageUrlMaxLengthMessage)]
         public string? ImageUrl { get; set; }
     }

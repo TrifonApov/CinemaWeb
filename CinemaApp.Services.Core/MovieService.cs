@@ -74,6 +74,59 @@ namespace CinemaApp.Services.Core
             };
         }
 
+        public async Task<MovieFormViewModel?> GetMovieFormModelByIdAsync(Guid id)
+        {
+            Movie? movieDb = await movieRepository
+                .GetMovieByIdAsync(id);
+
+            if (movieDb == null)
+            {
+                return null;
+            }
+
+            return new MovieFormViewModel()
+            {
+                Id = movieDb.Id,
+                Title = movieDb.Title,
+                Description = movieDb.Description,
+                Director = movieDb.Director,
+                Duration = movieDb.Duration,
+                Genre = movieDb.Genre,
+                ImageUrl = movieDb.ImageUrl,
+                ReleaseDate = movieDb.ReleaseDate
+            };
+        }
+
+        public async Task<bool> ExistsByIdAsync(Guid id)
+        {
+            return await movieRepository.ExistsByIdAsync(id);
+        }
+
+        public async Task EditMovieAsync(Guid id, MovieFormViewModel movieFormViewModel)
+        {
+            Movie? movieDb = await movieRepository
+                .GetMovieByIdAsync(id);
+            if (movieDb == null)
+            {
+                throw new EntityNotFoundException();
+            }
+
+            movieDb.Title = movieFormViewModel.Title;
+            movieDb.Description = movieFormViewModel.Description;
+            movieDb.Director = movieFormViewModel.Director;
+            movieDb.Genre = movieFormViewModel.Genre;
+            movieDb.ReleaseDate = movieFormViewModel.ReleaseDate;
+            movieDb.ImageUrl = movieFormViewModel.ImageUrl;
+            movieDb.Duration = movieFormViewModel.Duration;
+
+            bool editSuccess = await movieRepository.EditMovieAsync(movieDb);
+
+            if (!editSuccess)
+            {
+                throw new DbEntityPersistFailureException();
+            }
+        }
+
         public async Task CreateMovieAsync(MovieFormViewModel movieModel)
         {
             Movie movie = new Movie()
@@ -90,7 +143,7 @@ namespace CinemaApp.Services.Core
             bool successAdd = await movieRepository.AddMovieAsync(movie);
             if (!successAdd)
             {
-                throw new DbEntityCreatePersistFailureException();
+                throw new DbEntityPersistFailureException();
             }
         }
     }

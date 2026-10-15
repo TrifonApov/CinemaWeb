@@ -30,6 +30,7 @@
             public const string ImageUrlMaxLengthMessage = "Image URL cannot exceed {1} characters.";
 
             public const string CreateMovieFailureMessage = "An error occurred while creating the movie. Please try again in a few minutes.";
+            public const string EditMovieFailureMessage = "An error occurred while editing the movie. Please try again in a few minutes.";
 
         }
     }

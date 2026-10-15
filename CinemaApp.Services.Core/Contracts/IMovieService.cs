@@ -15,5 +15,9 @@ namespace CinemaApp.Services.Core.Contracts
         Task<bool> ExistsByIdAsync(Guid id);
 
         Task EditMovieAsync(Guid id, MovieFormViewModel movieFormViewModel);
+
+        Task SoftDeleteMovieAsync(Guid id);
+
+        Task HardDeleteMovieAsync(Guid id);
     }
 }

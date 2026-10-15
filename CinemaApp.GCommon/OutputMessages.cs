@@ -31,6 +31,7 @@
 
             public const string CreateMovieFailureMessage = "An error occurred while creating the movie. Please try again in a few minutes.";
             public const string EditMovieFailureMessage = "An error occurred while editing the movie. Please try again in a few minutes.";
+            public const string DeleteMovieFailureMessage = "An error occurred while deleting the movie. Please try again in a few minutes.";
 
         }
     }

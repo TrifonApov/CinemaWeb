@@ -123,7 +123,41 @@ namespace CinemaApp.Services.Core
 
             if (!editSuccess)
             {
-                throw new DbEntityPersistFailureException();
+                throw new EntityPersistFailureException();
+            }
+        }
+
+        public async Task SoftDeleteMovieAsync(Guid id)
+        {
+            Movie? movieDb = await movieRepository
+                .GetMovieByIdAsync(id);
+            if (movieDb == null)
+            {
+                throw new EntityNotFoundException();
+            }
+
+            bool deleteSuccess = await movieRepository.SoftDeleteMovieAsync(movieDb);
+
+            if (!deleteSuccess)
+            {
+                throw new EntityPersistFailureException();
+            }
+        }
+
+        public async Task HardDeleteMovieAsync(Guid id)
+        {
+            Movie? movieDb = await movieRepository
+                .GetMovieByIdAsync(id);
+            if (movieDb == null)
+            {
+                throw new EntityNotFoundException();
+            }
+
+            bool deleteSuccess = await movieRepository.HardDeleteMovieAsync(movieDb);
+
+            if (!deleteSuccess)
+            {
+                throw new EntityPersistFailureException();
             }
         }
 
@@ -143,7 +177,7 @@ namespace CinemaApp.Services.Core
             bool successAdd = await movieRepository.AddMovieAsync(movie);
             if (!successAdd)
             {
-                throw new DbEntityPersistFailureException();
+                throw new EntityPersistFailureException();
             }
         }
     }

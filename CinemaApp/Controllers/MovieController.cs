@@ -65,7 +65,7 @@ namespace CinemaApp.Web.Controllers
             {
                 await movieService.CreateMovieAsync(movieModel);
             }
-            catch (DbEntityPersistFailureException exception)
+            catch (EntityPersistFailureException exception)
             {
                 logger.LogError(exception, CreateMovieFailureMessage);
 
@@ -127,7 +127,7 @@ namespace CinemaApp.Web.Controllers
             {
                 return NotFound();
             }
-            catch (DbEntityPersistFailureException exception)
+            catch (EntityPersistFailureException exception)
             {
                 logger.LogInformation(exception, EditMovieFailureMessage);
                 Console.WriteLine(exception);
@@ -136,6 +136,50 @@ namespace CinemaApp.Web.Controllers
             }
 
             return RedirectToAction(nameof(Details), new { id });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            if (id == Guid.Empty)
+            {
+                return BadRequest();
+            }
+
+            MovieDetailsViewModel? movieToDelete = await movieService.GetMovieDetailsByIdAsync(id);
+            if (movieToDelete == null)
+            {
+                return NotFound();
+            }
+
+            return View(movieToDelete);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(Guid id, MovieDetailsViewModel? movieDetailsViewModel)
+        {
+            if (id == Guid.Empty)
+            {
+                return BadRequest();
+            }
+
+            try
+            {
+                await movieService.SoftDeleteMovieAsync(id);
+            }
+            catch (EntityNotFoundException exception)
+            {
+                return NotFound();
+            }
+            catch (EntityPersistFailureException exception)
+            {
+                logger.LogInformation(exception, EditMovieFailureMessage);
+                Console.WriteLine(exception);
+
+                return View(movieDetailsViewModel);
+            }
+
+            return RedirectToAction(nameof(Index));
         }
     }
 }

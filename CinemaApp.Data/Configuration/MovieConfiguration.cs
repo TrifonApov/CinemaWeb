@@ -10,6 +10,8 @@ namespace CinemaApp.Data.Configuration
     {
         public void Configure(EntityTypeBuilder<Movie> entity)
         {
+            entity
+                .HasQueryFilter(m => m.IsDeleted == false);
             entity.HasData(this.SeedMovies());
         }
 

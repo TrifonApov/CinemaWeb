@@ -9,5 +9,7 @@ namespace CinemaApp.Data.Repository.Contracts
         Task<IEnumerable<Movie>> GelAllMoviesAsync();
 
         Task<bool> AddMovieAsync(Movie movie);
+
+        Task<Movie?> GetMovieByIdAsync(Guid id);
     }
 }

@@ -1,11 +1,9 @@
 ﻿using System.Globalization;
 using CinemaApp.Data.Models;
-using CinemaApp.Data.Repository;
 using CinemaApp.Data.Repository.Contracts;
 using CinemaApp.GCommon.Exceptions;
 using CinemaApp.Services.Core.Contracts;
 using CinemaApp.Web.ViewModels.Movie;
-using Microsoft.EntityFrameworkCore;
 using static CinemaApp.GCommon.ApplicationConstants;
 
 namespace CinemaApp.Services.Core
@@ -51,6 +49,29 @@ namespace CinemaApp.Services.Core
             // Return Processed Data
             return allMoviesViewModel;
 
+        }
+
+        public async Task<MovieDetailsViewModel?> GetMovieDetailsByIdAsync(Guid id)
+        {
+            Movie? movieDb = await movieRepository
+                .GetMovieByIdAsync(id);
+
+            if (movieDb == null)
+            {
+                return null;
+            }
+
+            return new MovieDetailsViewModel()
+            {
+                Id = movieDb.Id,
+                Title = movieDb.Title,
+                Description = movieDb.Description,
+                Director = movieDb.Director,
+                Duration = movieDb.Duration,
+                Genre = movieDb.Genre,
+                ImageUrl = movieDb.ImageUrl ?? DefaultImageUrl,
+                ReleaseDate = movieDb.ReleaseDate.ToString(DefaultDateFormat, CultureInfo.InvariantCulture)
+            };
         }
 
         public async Task CreateMovieAsync(MovieFormViewModel movieModel)

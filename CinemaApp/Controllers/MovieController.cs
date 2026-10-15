@@ -29,6 +29,20 @@ namespace CinemaApp.Web.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
+        public async Task<IActionResult> Details(Guid id)
+        { 
+            MovieDetailsViewModel? movie = await movieService.GetMovieDetailsByIdAsync(id);
+            
+            if (movie == null)
+            {
+                return NotFound();
+            }
+
+            return View(movie);
+        }
+
+        [HttpGet]
         public IActionResult Create()  
         {
             return View();

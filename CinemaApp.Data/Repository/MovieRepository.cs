@@ -38,7 +38,7 @@ namespace CinemaApp.Data.Repository
 
         public async Task<IEnumerable<Movie>> GelAllMoviesAsync()
         {
-            return await this.dbContext
+            return await dbContext
                 .Movies
                 .AsNoTracking()
                 .OrderBy(m => m.Title)
@@ -51,6 +51,13 @@ namespace CinemaApp.Data.Repository
             int resultSuccess = await dbContext.SaveChangesAsync();
 
             return resultSuccess == 1;
+        }
+
+        public async Task<Movie?> GetMovieByIdAsync(Guid id)
+        {
+            return await dbContext
+                .Movies
+                .FindAsync(id);
         }
 
         private async Task<int> SaveChangesAsync()

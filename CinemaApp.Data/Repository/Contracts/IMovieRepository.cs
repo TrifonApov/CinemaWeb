@@ -4,7 +4,7 @@ namespace CinemaApp.Data.Repository.Contracts
 {
     public interface IMovieRepository
     {
-        IQueryable<Movie> GelAllMoviesNoTracking();
+        Task<IEnumerable<Movie>> GelAllMoviesNoTrackingWithProjectionAsync(Func<Movie,Movie>? projectFunc = null);
         
         Task<IEnumerable<Movie>> GelAllMoviesAsync();
 

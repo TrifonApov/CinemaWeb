@@ -9,8 +9,9 @@ using System.Threading.Tasks;
 
 namespace CinemaApp.Data.Repository
 {
-    public class MovieRepository : IMovieRepository
+    public class MovieRepository : IMovieRepository, IDisposable
     {
+        private bool isDisposed = false;
         private readonly CinemaAppDbContext dbContext;
         
         public MovieRepository(CinemaAppDbContext dbContext)
@@ -18,13 +19,21 @@ namespace CinemaApp.Data.Repository
             this.dbContext = dbContext;
         }
 
-        public IQueryable<Movie> GelAllMoviesNoTracking()
+        public async Task<IEnumerable<Movie>> GelAllMoviesNoTrackingWithProjectionAsync(Func<Movie, Movie>? projectFunc = null)
         {
-            IQueryable<Movie> allMovies = this.dbContext
+            IQueryable<Movie> moviesFetchQuery = dbContext
                 .Movies
-                .AsNoTracking();
+                .AsNoTracking()
+                .OrderBy(m => m.Title);
 
-            return allMovies;
+            if (projectFunc != null)
+            {
+                moviesFetchQuery = moviesFetchQuery
+                    .Select(m => projectFunc(m))
+                    .AsQueryable();
+            }
+
+            return await moviesFetchQuery.ToArrayAsync();
         }
 
         public async Task<IEnumerable<Movie>> GelAllMoviesAsync()
@@ -47,6 +56,25 @@ namespace CinemaApp.Data.Repository
         private async Task<int> SaveChangesAsync()
         {
             return await dbContext.SaveChangesAsync();
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected void Dispose(bool disposing)
+        {
+            if (!isDisposed)
+            {
+                if (disposing)
+                {
+                    dbContext.Dispose();
+                }
+            }
+
+            isDisposed = true;
         }
     }
 }

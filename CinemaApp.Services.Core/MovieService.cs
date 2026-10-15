@@ -1,4 +1,5 @@
-﻿using CinemaApp.Data.Models;
+﻿using System.Globalization;
+using CinemaApp.Data.Models;
 using CinemaApp.Data.Repository;
 using CinemaApp.Data.Repository.Contracts;
 using CinemaApp.GCommon.Exceptions;
@@ -19,22 +20,37 @@ namespace CinemaApp.Services.Core
 
         public async Task<IEnumerable<AllMoviesIndexViewModel>> GetAllMoviesOrderedByTitleAsync()
         {
-            IEnumerable<AllMoviesIndexViewModel> allMovies = await movieRepository
-                .GelAllMoviesNoTracking()
-                .Select(m => new AllMoviesIndexViewModel
+            // Fetch Data
+            IEnumerable<Movie> allMoviesDb = await movieRepository
+                .GelAllMoviesNoTrackingWithProjectionAsync(m => new Movie()
                 {
                     Id = m.Id,
                     Title = m.Title,
-                    Director = m.Director,
                     Genre = m.Genre,
-                    ImageUrl = m.ImageUrl ?? DefaultImageUrl,
-                    ReleaseDate = m.ReleaseDate.ToString(DefaultDateFormat)
+                    ReleaseDate = m.ReleaseDate,
+                    Director = m.Director,
+                    ImageUrl = m.ImageUrl
+                });
+
+            // Process Data
+            IEnumerable<AllMoviesIndexViewModel> allMoviesViewModel = allMoviesDb
+                .Select(m => new AllMoviesIndexViewModel()
+                {
+                    Id = m.Id,
+                    Title = m.Title,
+                    Genre = m.Genre,
+                    ReleaseDate = m.ReleaseDate.ToString(DefaultDateFormat, CultureInfo.InvariantCulture),
+                    Director = m.Director,
+                    ImageUrl = m.ImageUrl ?? DefaultImageUrl
                 })
                 .OrderBy(m => m.Title)
                 .ThenBy(m => m.Genre)
-                .ToListAsync();
+                .ThenBy(m => m.Director)
+                .ToArray();
 
-            return allMovies;
+            // Return Processed Data
+            return allMoviesViewModel;
+
         }
 
         public async Task CreateMovieAsync(MovieFormViewModel movieModel)

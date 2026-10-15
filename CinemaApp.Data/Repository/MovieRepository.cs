@@ -35,5 +35,18 @@ namespace CinemaApp.Data.Repository
                 .OrderBy(m => m.Title)
                 .ToArrayAsync();
         }
+
+        public async Task<bool> AddMovieAsync(Movie movie)
+        {
+            await dbContext.Movies.AddAsync(movie);
+            int resultSuccess = await dbContext.SaveChangesAsync();
+
+            return resultSuccess == 1;
+        }
+
+        private async Task<int> SaveChangesAsync()
+        {
+            return await dbContext.SaveChangesAsync();
+        }
     }
 }

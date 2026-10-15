@@ -1,5 +1,7 @@
-﻿using CinemaApp.Data.Repository;
+﻿using CinemaApp.Data.Models;
+using CinemaApp.Data.Repository;
 using CinemaApp.Data.Repository.Contracts;
+using CinemaApp.GCommon.Exceptions;
 using CinemaApp.Services.Core.Contracts;
 using CinemaApp.Web.ViewModels.Movie;
 using Microsoft.EntityFrameworkCore;
@@ -33,6 +35,26 @@ namespace CinemaApp.Services.Core
                 .ToListAsync();
 
             return allMovies;
+        }
+
+        public async Task CreateMovieAsync(MovieFormViewModel movieModel)
+        {
+            Movie movie = new Movie()
+            {
+                Title = movieModel.Title,
+                Description = movieModel.Description,
+                Director = movieModel.Director,
+                Duration = movieModel.Duration,
+                Genre = movieModel.Genre,
+                ReleaseDate = movieModel.ReleaseDate,
+                ImageUrl = movieModel.ImageUrl
+            };
+
+            bool successAdd = await movieRepository.AddMovieAsync(movie);
+            if (!successAdd)
+            {
+                throw new DbEntityCreatePersistFailureException();
+            }
         }
     }
 }

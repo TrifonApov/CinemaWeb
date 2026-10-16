@@ -1,14 +1,14 @@
-﻿using AutoMapper;
-using CinemaApp.GCommon.Exceptions;
-using CinemaApp.Services.Core.Contracts;
-using CinemaApp.Services.Models.Movie;
-using CinemaApp.Web.ViewModels.Movie;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using static CinemaApp.GCommon.OutputMessages.Movie;
-using static CinemaApp.GCommon.ApplicationConstants;
-namespace CinemaApp.Web.Controllers
+﻿namespace CinemaApp.Web.Controllers
 {
+    using AutoMapper;
+    using CinemaApp.GCommon.Exceptions;
+    using CinemaApp.Services.Core.Contracts;
+    using CinemaApp.Services.Models.Movie;
+    using CinemaApp.Web.ViewModels.Movie;
+    using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Mvc;
+    using static CinemaApp.GCommon.OutputMessages.Movie;
+    using static CinemaApp.GCommon.ApplicationConstants;
     public class MovieController : BaseController
     {
         private readonly IMovieService movieService;

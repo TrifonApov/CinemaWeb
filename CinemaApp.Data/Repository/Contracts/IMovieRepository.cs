@@ -1,7 +1,7 @@
-﻿using CinemaApp.Data.Models;
-
-namespace CinemaApp.Data.Repository.Contracts
+﻿namespace CinemaApp.Data.Repository.Contracts
 {
+    using CinemaApp.Data.Models;
+
     public interface IMovieRepository
     {
         Task<IEnumerable<Movie>> GelAllMoviesNoTrackingWithProjectionAsync(Func<Movie,Movie>? projectFunc = null);

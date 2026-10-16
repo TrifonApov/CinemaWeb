@@ -1,10 +1,11 @@
-﻿using CinemaApp.Web.ViewModels.Movie;
-
-namespace CinemaApp.Services.Core.Contracts
+﻿namespace CinemaApp.Services.Core.Contracts
 {
+    using CinemaApp.Web.ViewModels.Movie;
+    using CinemaApp.Services.Models.Movie;
+
     public interface IMovieService
     {
-        Task<IEnumerable<AllMoviesIndexViewModel>> GetAllMoviesOrderedByTitleAsync();
+        Task<IEnumerable<MovieAllDto>> GetAllMoviesOrderedByTitleAsync();
         
         Task CreateMovieAsync(MovieFormViewModel movieFormViewModel);
 

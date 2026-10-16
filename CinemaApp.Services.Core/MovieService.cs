@@ -1,22 +1,28 @@
-﻿using System.Globalization;
-using CinemaApp.Data.Models;
-using CinemaApp.Data.Repository.Contracts;
-using CinemaApp.GCommon.Exceptions;
-using CinemaApp.Services.Core.Contracts;
-using CinemaApp.Web.ViewModels.Movie;
-using static CinemaApp.GCommon.ApplicationConstants;
+﻿using AutoMapper;
 
 namespace CinemaApp.Services.Core
 {
+    using System.Globalization;
+    using CinemaApp.Data.Models;
+    using CinemaApp.Data.Repository.Contracts;
+    using CinemaApp.GCommon.Exceptions;
+    using CinemaApp.Services.Core.Contracts;
+    using CinemaApp.Services.Models.Movie;
+    using CinemaApp.Web.ViewModels.Movie;
+    using static CinemaApp.GCommon.ApplicationConstants;
+
     public class MovieService : IMovieService
     {
         private readonly IMovieRepository movieRepository;
-        public MovieService(IMovieRepository movieRepository)
+        private readonly IMapper mapper;
+
+        public MovieService(IMovieRepository movieRepository, IMapper mapper)
         {
             this.movieRepository = movieRepository;
+            this.mapper = mapper;
         }
 
-        public async Task<IEnumerable<AllMoviesIndexViewModel>> GetAllMoviesOrderedByTitleAsync()
+        public async Task<IEnumerable<MovieAllDto>> GetAllMoviesOrderedByTitleAsync()
         {
             // Fetch Data
             IEnumerable<Movie> allMoviesDb = await movieRepository
@@ -27,20 +33,12 @@ namespace CinemaApp.Services.Core
                     Genre = m.Genre,
                     ReleaseDate = m.ReleaseDate,
                     Director = m.Director,
-                    ImageUrl = m.ImageUrl
+                    ImageUrl = m.ImageUrl ?? DefaultImageUrl
                 });
 
             // Process Data
-            IEnumerable<AllMoviesIndexViewModel> allMoviesViewModel = allMoviesDb
-                .Select(m => new AllMoviesIndexViewModel()
-                {
-                    Id = m.Id,
-                    Title = m.Title,
-                    Genre = m.Genre,
-                    ReleaseDate = m.ReleaseDate.ToString(DefaultDateFormat, CultureInfo.InvariantCulture),
-                    Director = m.Director,
-                    ImageUrl = m.ImageUrl ?? DefaultImageUrl
-                })
+            IEnumerable<MovieAllDto> allMoviesViewModel = mapper
+                .Map<IEnumerable<MovieAllDto>>(allMoviesDb)
                 .OrderBy(m => m.Title)
                 .ThenBy(m => m.Genre)
                 .ThenBy(m => m.Director)

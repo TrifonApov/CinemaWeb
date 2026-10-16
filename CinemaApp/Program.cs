@@ -1,3 +1,6 @@
+using CinemaApp.Services.Models.Movie;
+using CinemaApp.Web.ViewModels.Movie;
+
 namespace CinemaApp.Web
 {
     using Microsoft.AspNetCore.Identity;
@@ -7,7 +10,7 @@ namespace CinemaApp.Web
     using CinemaApp.Services.Core.Contracts;
     using CinemaApp.Data.Repository.Contracts;
     using CinemaApp.Data.Repository;
-
+    using CinemaApp.Services.AutoMapping;
     public class Program
     {
         public static void Main(string[] args)
@@ -19,19 +22,23 @@ namespace CinemaApp.Web
                 .Configuration
                 .GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
             
+            AutoMapperConfig.RegisterMappings(typeof(MovieAllDto).Assembly, typeof(AllMoviesIndexViewModel).Assembly);
+
             builder.Services.AddDbContext<CinemaAppDbContext>(options =>
                 options.UseSqlServer(connectionString));
             
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
             builder.Services.AddScoped<IMovieRepository, MovieRepository>();
-           
+
             builder.Services.AddScoped<IMovieService, MovieService>();
-                        
+            
             builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<CinemaAppDbContext>();
-            
+
             builder.Services.AddControllersWithViews();
+
+            builder.Services.AddSingleton(AutoMapperConfig.MapperInstance);
 
             builder.Services.Configure<IdentityOptions>(options =>
             {

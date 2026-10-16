@@ -1,5 +1,7 @@
-﻿using CinemaApp.GCommon.Exceptions;
+﻿using AutoMapper;
+using CinemaApp.GCommon.Exceptions;
 using CinemaApp.Services.Core.Contracts;
+using CinemaApp.Services.Models.Movie;
 using CinemaApp.Web.ViewModels.Movie;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -11,19 +13,24 @@ namespace CinemaApp.Web.Controllers
     {
         private readonly IMovieService movieService;
         private readonly ILogger<MovieController> logger;
+        private readonly IMapper mapper;
 
-        public MovieController(IMovieService movieService, ILogger<MovieController> logger)
+        public MovieController(IMovieService movieService, ILogger<MovieController> logger, IMapper mapper)
         {
             this.movieService = movieService;
             this.logger = logger;
+            this.mapper = mapper;
         }
 
         [HttpGet]
         [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
-            IEnumerable<AllMoviesIndexViewModel> allMovies = await movieService
+            IEnumerable<MovieAllDto> movieAllDtos = await movieService
                 .GetAllMoviesOrderedByTitleAsync();
+
+            IEnumerable<AllMoviesIndexViewModel> allMovies = mapper
+                .Map<IEnumerable<AllMoviesIndexViewModel>>(movieAllDtos);
 
             return View(allMovies);
         }

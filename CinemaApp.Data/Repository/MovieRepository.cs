@@ -1,9 +1,9 @@
-﻿using CinemaApp.Data.Models;
-using CinemaApp.Data.Repository.Contracts;
-using Microsoft.EntityFrameworkCore;
-
-namespace CinemaApp.Data.Repository
+﻿namespace CinemaApp.Data.Repository
 {
+    using CinemaApp.Data.Models;
+    using CinemaApp.Data.Repository.Contracts;
+    using Microsoft.EntityFrameworkCore;
+
     public class MovieRepository : IMovieRepository, IDisposable
     {
         private bool isDisposed = false;

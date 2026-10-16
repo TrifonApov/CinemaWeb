@@ -1,5 +1,4 @@
-﻿using CinemaApp.Data.Common;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using static CinemaApp.Data.Common.EntityValidation.Movie;
 

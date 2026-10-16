@@ -7,15 +7,15 @@
     {
         Task<IEnumerable<MovieAllDto>> GetAllMoviesOrderedByTitleAsync();
         
-        Task CreateMovieAsync(MovieFormViewModel movieFormViewModel);
+        Task CreateMovieAsync(MovieDetailsDto movieFormViewModel);
 
-        Task<MovieDetailsViewModel?> GetMovieDetailsByIdAsync(Guid id);
+        Task<MovieDetailsDto?> GetMovieDetailsByIdAsync(Guid id);
 
-        Task<MovieFormViewModel?> GetMovieFormModelByIdAsync(Guid id);
+        Task<MovieDetailsDto?> GetMovieFormModelByIdAsync(Guid id);
 
         Task<bool> ExistsByIdAsync(Guid id);
 
-        Task EditMovieAsync(Guid id, MovieFormViewModel movieFormViewModel);
+        Task EditMovieAsync(Guid id, MovieDetailsDto movieDetailsDto);
 
         Task SoftDeleteMovieAsync(Guid id);
 

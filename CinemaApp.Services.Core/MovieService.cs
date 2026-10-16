@@ -49,7 +49,7 @@ namespace CinemaApp.Services.Core
 
         }
 
-        public async Task<MovieDetailsViewModel?> GetMovieDetailsByIdAsync(Guid id)
+        public async Task<MovieDetailsDto?> GetMovieDetailsByIdAsync(Guid id)
         {
             Movie? movieDb = await movieRepository
                 .GetMovieByIdAsync(id);
@@ -59,20 +59,10 @@ namespace CinemaApp.Services.Core
                 return null;
             }
 
-            return new MovieDetailsViewModel()
-            {
-                Id = movieDb.Id,
-                Title = movieDb.Title,
-                Description = movieDb.Description,
-                Director = movieDb.Director,
-                Duration = movieDb.Duration,
-                Genre = movieDb.Genre,
-                ImageUrl = movieDb.ImageUrl ?? DefaultImageUrl,
-                ReleaseDate = movieDb.ReleaseDate.ToString(DefaultDateFormat, CultureInfo.InvariantCulture)
-            };
+            return mapper.Map<MovieDetailsDto>(movieDb);
         }
 
-        public async Task<MovieFormViewModel?> GetMovieFormModelByIdAsync(Guid id)
+        public async Task<MovieDetailsDto?> GetMovieFormModelByIdAsync(Guid id)
         {
             Movie? movieDb = await movieRepository
                 .GetMovieByIdAsync(id);
@@ -82,17 +72,7 @@ namespace CinemaApp.Services.Core
                 return null;
             }
 
-            return new MovieFormViewModel()
-            {
-                Id = movieDb.Id,
-                Title = movieDb.Title,
-                Description = movieDb.Description,
-                Director = movieDb.Director,
-                Duration = movieDb.Duration,
-                Genre = movieDb.Genre,
-                ImageUrl = movieDb.ImageUrl,
-                ReleaseDate = movieDb.ReleaseDate
-            };
+            return mapper.Map<MovieDetailsDto>(movieDb);
         }
 
         public async Task<bool> ExistsByIdAsync(Guid id)
@@ -100,7 +80,7 @@ namespace CinemaApp.Services.Core
             return await movieRepository.ExistsByIdAsync(id);
         }
 
-        public async Task EditMovieAsync(Guid id, MovieFormViewModel movieFormViewModel)
+        public async Task EditMovieAsync(Guid id, MovieDetailsDto movieDetailsDto)
         {
             Movie? movieDb = await movieRepository
                 .GetMovieByIdAsync(id);
@@ -109,13 +89,13 @@ namespace CinemaApp.Services.Core
                 throw new EntityNotFoundException();
             }
 
-            movieDb.Title = movieFormViewModel.Title;
-            movieDb.Description = movieFormViewModel.Description;
-            movieDb.Director = movieFormViewModel.Director;
-            movieDb.Genre = movieFormViewModel.Genre;
-            movieDb.ReleaseDate = movieFormViewModel.ReleaseDate;
-            movieDb.ImageUrl = movieFormViewModel.ImageUrl;
-            movieDb.Duration = movieFormViewModel.Duration;
+            movieDb.Title = movieDetailsDto.Title;
+            movieDb.Description = movieDetailsDto.Description;
+            movieDb.Director = movieDetailsDto.Director;
+            movieDb.Genre = movieDetailsDto.Genre;
+            movieDb.ReleaseDate = movieDetailsDto.ReleaseDate;
+            movieDb.ImageUrl = movieDetailsDto.ImageUrl ?? DefaultImageUrl;
+            movieDb.Duration = movieDetailsDto.Duration;
 
             bool editSuccess = await movieRepository.EditMovieAsync(movieDb);
 
@@ -159,20 +139,13 @@ namespace CinemaApp.Services.Core
             }
         }
 
-        public async Task CreateMovieAsync(MovieFormViewModel movieModel)
+        public async Task CreateMovieAsync(MovieDetailsDto movieDetailsDto)
         {
-            Movie movie = new Movie()
-            {
-                Title = movieModel.Title,
-                Description = movieModel.Description,
-                Director = movieModel.Director,
-                Duration = movieModel.Duration,
-                Genre = movieModel.Genre,
-                ReleaseDate = movieModel.ReleaseDate,
-                ImageUrl = movieModel.ImageUrl
-            };
+            Movie movie = mapper
+                .Map<Movie>(movieDetailsDto);
 
             bool successAdd = await movieRepository.AddMovieAsync(movie);
+            
             if (!successAdd)
             {
                 throw new EntityPersistFailureException();

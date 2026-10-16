@@ -44,14 +44,18 @@ namespace CinemaApp.Web.Controllers
                 return BadRequest();
             }
 
-            MovieDetailsViewModel? movie = await movieService.GetMovieDetailsByIdAsync(id);
+            MovieDetailsDto? movieDetailsDto = await movieService
+                .GetMovieDetailsByIdAsync(id);
 
-            if (movie == null)
+            if (movieDetailsDto == null)
             {
                 return NotFound();
             }
 
-            return View(movie);
+            MovieDetailsViewModel movieDetailsVm = mapper
+                .Map<MovieDetailsViewModel>(movieDetailsDto);
+
+            return View(movieDetailsVm);
         }
 
         [HttpGet]
@@ -61,30 +65,32 @@ namespace CinemaApp.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(MovieFormViewModel movieModel)
+        public async Task<IActionResult> Create(MovieFormViewModel movieFormVm)
         {
             if (!ModelState.IsValid)
             {
-                return View(movieModel);
+                return View(movieFormVm);
             }
 
             try
             {
-                await movieService.CreateMovieAsync(movieModel);
+                MovieDetailsDto movieDetailsDto = mapper.Map<MovieDetailsDto>(movieFormVm);
+
+                await movieService.CreateMovieAsync(movieDetailsDto);
             }
             catch (EntityPersistFailureException exception)
             {
                 logger.LogError(exception, CreateMovieFailureMessage);
 
                 ModelState.AddModelError(string.Empty, CreateMovieFailureMessage);
-                return View(movieModel);
+                return View(movieFormVm);
             }
             catch (Exception exception)
             {
                 logger.LogError(exception, UnexpectedErrorMessage);
 
                 ModelState.AddModelError(string.Empty, UnexpectedErrorMessage);
-                return View(movieModel);
+                return View(movieFormVm);
             }
 
             return RedirectToAction(nameof(Index));
@@ -98,14 +104,18 @@ namespace CinemaApp.Web.Controllers
                 return BadRequest();
             }
 
-            MovieFormViewModel? movie = await movieService
+            MovieDetailsDto? movieDetailsDto = await movieService
                 .GetMovieFormModelByIdAsync(id);
-            if (movie == null)
+
+            if (movieDetailsDto == null)
             {
                 return NotFound();
             }
 
-            return View(movie);
+            MovieFormViewModel movieFormVm = mapper
+                .Map<MovieFormViewModel>(movieDetailsDto);
+
+            return View(movieFormVm);
         }
 
         [HttpPost]
@@ -128,7 +138,10 @@ namespace CinemaApp.Web.Controllers
 
             try
             {
-                await movieService.EditMovieAsync(id, movieModel);
+                MovieDetailsDto movieDetailsDto = mapper
+                    .Map<MovieDetailsDto>(movieModel);
+
+                await movieService.EditMovieAsync(id, movieDetailsDto);
             }
             catch (EntityNotFoundException exception)
             {
@@ -153,13 +166,18 @@ namespace CinemaApp.Web.Controllers
                 return BadRequest();
             }
 
-            MovieDetailsViewModel? movieToDelete = await movieService.GetMovieDetailsByIdAsync(id);
-            if (movieToDelete == null)
+            MovieDetailsDto? movieDetailsDto = await movieService
+                .GetMovieDetailsByIdAsync(id);
+
+            if (movieDetailsDto == null)
             {
                 return NotFound();
             }
 
-            return View(movieToDelete);
+            MovieDeleteViewModel movieDeleteVm = mapper
+                .Map<MovieDeleteViewModel>(movieDetailsDto);
+
+            return View(movieDeleteVm);
         }
 
         [HttpPost]

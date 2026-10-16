@@ -8,7 +8,7 @@ namespace CinemaApp.Services.Models.Movie
     using Data.Models;
     using AutoMapping;
 
-    public class MovieAllDto : IMapFrom<Movie>, IHaveCustomMappings
+    public class MovieAllDto : IMapFrom<Movie>, IMapTo<Movie>, IHaveCustomMappings
     {
         public Guid Id { get; set; }
         public string Title { get; set; } = null!;
@@ -19,14 +19,16 @@ namespace CinemaApp.Services.Models.Movie
 
         public string? ImageUrl { get; set; }
 
-        public string ReleaseDate { get; set; } = null!;
+        public DateTime ReleaseDate { get; set; }
 
         public void CreateMappings(IProfileExpression configuration)
         {
-            configuration.CreateMap<Movie, MovieAllDto>()
-                .ForMember(d => d.ReleaseDate,
-                    y => y.MapFrom(s => s.ReleaseDate
-                        .ToString(DefaultDateFormat, CultureInfo.InvariantCulture)));
+            configuration.CreateMap<Movie, MovieDetailsDto>()
+                .ForMember(d => d.ImageUrl,
+                    y => y.MapFrom(s => s.ImageUrl ?? DefaultImageUrl));
+
+            configuration.CreateMap<MovieAllDto, Movie>()
+                .ForMember(d => d.Id, option => option.Ignore());
         }
     }
 }

@@ -32,13 +32,14 @@ namespace CinemaApp.Web
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
             builder.Services.RegisterRepositories(typeof(MovieRepository));
-            //builder.Services.RegisterRepositories(typeof(WatchlistRepository));
+
+            builder.Services.RegisterUserServices(typeof(MovieService));
 
             //builder.Services.AddScoped<IMovieRepository, MovieRepository>();
             //builder.Services.AddScoped<IWatchlistRepository, WatchlistRepository>();
 
-            builder.Services.AddScoped<IMovieService, MovieService>();
-            builder.Services.AddScoped<IWatchlistService, WatchlistService>();
+            //builder.Services.AddScoped<IMovieService, MovieService>();
+            //builder.Services.AddScoped<IWatchlistService, WatchlistService>();
 
             builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<CinemaAppDbContext>();

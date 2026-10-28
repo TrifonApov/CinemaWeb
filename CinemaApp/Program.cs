@@ -1,16 +1,18 @@
-using CinemaApp.Services.Models.Movie;
-using CinemaApp.Web.ViewModels.Movie;
+using CinemaApp.Services.Core;
+using CinemaApp.Services.Core.Contracts;
 
 namespace CinemaApp.Web
 {
     using Microsoft.AspNetCore.Identity;
     using Microsoft.EntityFrameworkCore;
     using CinemaApp.Data;
-    using CinemaApp.Services.Core;
-    using CinemaApp.Services.Core.Contracts;
-    using CinemaApp.Data.Repository.Contracts;
-    using CinemaApp.Data.Repository;
     using CinemaApp.Services.AutoMapping;
+    using CinemaApp.Data.Repository;
+    using CinemaApp.Services.Models.Movie;
+    using CinemaApp.Web.Infrastructure.Extensions;
+    using CinemaApp.Web.ViewModels.Movie;
+
+
     public class Program
     {
         public static void Main(string[] args)
@@ -29,12 +31,15 @@ namespace CinemaApp.Web
             
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-            builder.Services.AddScoped<IMovieRepository, MovieRepository>();
-            builder.Services.AddScoped<IWatchlistRepository, WatchlistRepository>();
+            builder.Services.RegisterRepositories(typeof(MovieRepository));
+            //builder.Services.RegisterRepositories(typeof(WatchlistRepository));
+
+            //builder.Services.AddScoped<IMovieRepository, MovieRepository>();
+            //builder.Services.AddScoped<IWatchlistRepository, WatchlistRepository>();
 
             builder.Services.AddScoped<IMovieService, MovieService>();
             builder.Services.AddScoped<IWatchlistService, WatchlistService>();
-            
+
             builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<CinemaAppDbContext>();
 

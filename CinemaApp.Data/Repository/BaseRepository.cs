@@ -37,5 +37,9 @@ namespace CinemaApp.Data.Repository
 
             isDisposed = true;
         }
+        protected async Task<int> SaveChangesAsync()
+        {
+            return await DbContext.SaveChangesAsync();
+        }
     }
 }

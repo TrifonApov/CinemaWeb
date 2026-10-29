@@ -17,5 +17,26 @@ namespace CinemaApp.Data.Repository
                 
             return userMovies;
         }
+
+        public async Task<bool> ExistAsync(string userId, Guid movieId)
+        {
+            bool watchlistEntryExist = await DbContext
+                .UsersMovies
+                .AnyAsync(um => um.UserId == userId &&
+                                um.MovieId == movieId);
+
+            return watchlistEntryExist;
+        }
+
+        public async Task<bool> AddUserMovieAsync(UserMovie userMovie)
+        {
+            await DbContext
+                .UsersMovies
+                .AddAsync(userMovie);
+
+            int resultSuccess = await SaveChangesAsync();
+
+            return resultSuccess == 1;
+        }
     }
 }

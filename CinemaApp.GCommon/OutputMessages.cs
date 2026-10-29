@@ -32,7 +32,14 @@
             public const string CreateMovieFailureMessage = "An error occurred while creating the movie. Please try again in a few minutes.";
             public const string EditMovieFailureMessage = "An error occurred while editing the movie. Please try again in a few minutes.";
             public const string DeleteMovieFailureMessage = "An error occurred while deleting the movie. Please try again in a few minutes.";
+        }
 
+        public static class Watchlist
+        {
+            public const string MovieNotFoundMessage = "There is no such movie";
+            public const string MovieAlreadyInWatchlistMessage = "The movie {0} is already in user {1} watchlist.";
+            public const string AddToWatchlistErrorMessage = "An error occured while adding the movie to your watchlist.";
+            public const string RemoveFromWatchlistErrorMessage = "An error occured while removing the movie from your watchlist.";
         }
     }
 }

@@ -26,8 +26,10 @@
         [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
+            string? userId = GetUserId();
+
             IEnumerable<MovieAllDto> movieAllDtos = await movieService
-                .GetAllMoviesOrderedByTitleAsync();
+                .GetAllMoviesOrderedByTitleAsync(userId);
 
             IEnumerable<AllMoviesIndexViewModel> allMovies = mapper
                 .Map<IEnumerable<AllMoviesIndexViewModel>>(movieAllDtos);

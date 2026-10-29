@@ -18,6 +18,9 @@ namespace CinemaApp.Web.ViewModels.Movie
         public string ImageUrl { get; set; } = null!;
 
         public string ReleaseDate { get; set; } = null!;
+
+        public bool IsInUserWatchlist { get; set; }
+
         public void CreateMappings(IProfileExpression configuration)
         {
             configuration.CreateMap<MovieAllDto, AllMoviesIndexViewModel>()

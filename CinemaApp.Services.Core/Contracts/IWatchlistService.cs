@@ -5,6 +5,8 @@
     {
         Task<IEnumerable<WatchlistMovieDto>> GetUserWatchlistByIdAsync(string userId);
 
+        Task<bool> MovieIsInUserWatchlistAsync(string userId, Guid movieId);
 
+        Task AddMovieToUserWatchlistAsync(string userId, Guid movieId);
     }
 }

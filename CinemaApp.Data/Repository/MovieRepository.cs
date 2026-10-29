@@ -37,7 +37,7 @@
         public async Task<bool> AddMovieAsync(Movie movie)
         {
             await DbContext.Movies.AddAsync(movie);
-            int resultSuccess = await DbContext.SaveChangesAsync();
+            int resultSuccess = await SaveChangesAsync();
 
             return resultSuccess == 1;
         }
@@ -82,9 +82,6 @@
             return resultCount == 1;
         }
 
-        private async Task<int> SaveChangesAsync()
-        {
-            return await DbContext.SaveChangesAsync();
-        }
+        
     }
 }

@@ -14,15 +14,17 @@ namespace CinemaApp.Services.Core
     public class MovieService : IMovieService
     {
         private readonly IMovieRepository movieRepository;
+        private readonly IWatchlistRepository watchlistRepository;
         private readonly IMapper mapper;
 
-        public MovieService(IMovieRepository movieRepository, IMapper mapper)
+        public MovieService(IMovieRepository movieRepository, IMapper mapper, IWatchlistRepository watchlistRepository)
         {
             this.movieRepository = movieRepository;
             this.mapper = mapper;
+            this.watchlistRepository = watchlistRepository;
         }
 
-        public async Task<IEnumerable<MovieAllDto>> GetAllMoviesOrderedByTitleAsync()
+        public async Task<IEnumerable<MovieAllDto>> GetAllMoviesOrderedByTitleAsync(string? userId = null)
         {
             // Fetch Data
             IEnumerable<Movie> allMoviesDb = await movieRepository
@@ -37,15 +39,23 @@ namespace CinemaApp.Services.Core
                 });
 
             // Process Data
-            IEnumerable<MovieAllDto> allMoviesViewModel = mapper
+            IEnumerable<MovieAllDto> allMoviesDto = mapper
                 .Map<IEnumerable<MovieAllDto>>(allMoviesDb)
                 .OrderBy(m => m.Title)
                 .ThenBy(m => m.Genre)
                 .ThenBy(m => m.Director)
                 .ToArray();
 
+            if (!string.IsNullOrWhiteSpace(userId))
+            {
+                foreach (MovieAllDto movieAllDto in allMoviesDto)
+                {
+                    movieAllDto.IsInUserWatchlist = await watchlistRepository
+                        .ExistAsync(userId, movieAllDto.Id);
+                }
+            }
             // Return Processed Data
-            return allMoviesViewModel;
+            return allMoviesDto;
 
         }
 

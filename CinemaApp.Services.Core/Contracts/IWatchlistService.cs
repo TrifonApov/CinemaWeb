@@ -8,5 +8,8 @@
         Task<bool> MovieIsInUserWatchlistAsync(string userId, Guid movieId);
 
         Task AddMovieToUserWatchlistAsync(string userId, Guid movieId);
+
+        Task RemoveFromUserWatchlist(string userId, Guid movieId);
     }
 }
+    

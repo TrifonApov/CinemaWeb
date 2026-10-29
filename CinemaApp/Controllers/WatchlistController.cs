@@ -1,7 +1,6 @@
-﻿using CinemaApp.GCommon.Exceptions;
-
-namespace CinemaApp.Web.Controllers
+﻿namespace CinemaApp.Web.Controllers
 {
+    using CinemaApp.GCommon.Exceptions;
     using AutoMapper;
     using CinemaApp.Services.Core.Contracts;
     using CinemaApp.Services.Models.Watchlist;
@@ -58,6 +57,29 @@ namespace CinemaApp.Web.Controllers
             catch (EntityPersistFailureException epfe)
             {
                 logger.LogError(epfe, string.Format(AddToWatchlistErrorMessage));
+
+                return RedirectToAction(nameof(Index));
+            }
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Remove(Guid movieId)
+        {
+            string userId = GetUserId()!;
+
+            try
+            {
+                await watchlistService.RemoveFromUserWatchlist(userId, movieId);
+            }
+            catch (EntityNotFoundException enfe)
+            {
+                return BadRequest();
+            }
+            catch (EntityPersistFailureException epfe)
+            {
+                logger.LogError(epfe, string.Format(RemoveFromWatchlistErrorMessage));
 
                 return RedirectToAction(nameof(Index));
             }

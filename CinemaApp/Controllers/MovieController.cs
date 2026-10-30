@@ -90,6 +90,7 @@
             catch (Exception exception)
             {
                 logger.LogError(exception, UnexpectedErrorMessage);
+                TempData[ErrorTempDataKey] = UnexpectedErrorMessage;
 
                 ModelState.AddModelError(string.Empty, UnexpectedErrorMessage);
                 return View(movieFormVm);
@@ -157,6 +158,7 @@
                 return View(movieModel);
             }
 
+            TempData[SuccessTempDataKey] = "Edited successfully";
             return RedirectToAction(nameof(Details), new { id });
         }
 

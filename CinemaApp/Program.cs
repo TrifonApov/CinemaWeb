@@ -67,6 +67,12 @@ namespace CinemaApp.Web
                 app.UseHsts();
             }
 
+            app.Use(async (context, next) =>
+            {
+                context.Response.Headers.Append("Permissions-Policy", "unload=*");
+                await next();
+            });
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 

@@ -1,5 +1,4 @@
-﻿using CinemaApp.Data.Common;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using static CinemaApp.Data.Common.EntityValidation.Movie;
 
@@ -41,11 +40,13 @@ namespace CinemaApp.Data.Models
 
         public bool IsDeleted { get; set; } = false;
 
+        public virtual ICollection<UserMovie> MovieUsersWatchlist { get; set; }
+            = new List<UserMovie>();
+
         //public virtual ICollection<CinemaMovie> MovieCinemas { get; set; } 
+
         //    = new HashSet<CinemaMovie>();
 
-        //public virtual ICollection<ApplicationUserMovie> MovieApplicationUsers { get; set; }
-        //    = new HashSet<ApplicationUserMovie>();
 
         //public virtual ICollection<Ticket> Tickets { get; set; }
         //    = new HashSet<Ticket>();

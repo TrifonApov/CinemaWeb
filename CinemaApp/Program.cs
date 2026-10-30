@@ -71,17 +71,18 @@ namespace CinemaApp.Web
             app.UseStaticFiles();
 
             app.UseRouting();
+            
+            app.UseStatusCodePagesWithRedirects("/Home/Error/{0}");
 
             app.UseAuthentication();
             app.UseAuthorization();
+
 
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
             app.MapRazorPages();
-
-            app.UseStatusCodePagesWithRedirects("/Home/Error");
-
+            
             app.Run();
         }
         private static void ConfigureIdentityOptions(ConfigurationManager configuration, IdentityOptions options)

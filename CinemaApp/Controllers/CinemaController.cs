@@ -34,8 +34,17 @@
         [AllowAnonymous]
         public async Task<IActionResult> Program(Guid id)
         {
-            // Implementation for viewing cinema program
-            return this.NoContent();
+            CinemaProgramDetailsDto? cinemaProgramDetailsDto = await cinemaService.GetCinemaProgramByIdTask(id);
+
+            if (cinemaProgramDetailsDto == null)
+            {
+                return NotFound();
+            }
+
+            CinemaProgramViewModel cinemaProgramViewModel = mapper
+                .Map<CinemaProgramViewModel>(cinemaProgramDetailsDto);
+
+            return View(cinemaProgramViewModel);
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace CinemaApp.Services.Core
+﻿using CinemaApp.Web.ViewModels.Cinema;
+
+namespace CinemaApp.Services.Core
 {
     using CinemaApp.Data.Repository.Contracts;
     using CinemaApp.Services.Core.Contracts;
@@ -38,6 +40,22 @@
                 .Map<IEnumerable<CinemaAllDto>>(allCinemas);
 
             return allCinemasDtos;
+        }
+
+        public async Task<CinemaProgramDetailsDto?> GetCinemaProgramByIdTask(Guid id)
+        {
+            Cinema? cinema = await cinemaRepository
+                .GetCinemaByIdAsyncIncludeMovies(id);
+
+            if (cinema == null)
+            {
+                return null;
+            }
+
+            CinemaProgramDetailsDto cinemaProgramDto = mapper
+                .Map<CinemaProgramDetailsDto>(cinema);
+
+            return cinemaProgramDto;
         }
     }
 }

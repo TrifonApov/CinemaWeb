@@ -5,5 +5,7 @@
     public interface ICinemaService
     {
         Task<IEnumerable<CinemaAllDto>> GetAllCinemasOrderedByLocationAsync();
+
+        Task<CinemaProgramDetailsDto?> GetCinemaProgramByIdTask(Guid id);
     }
 }

@@ -19,7 +19,7 @@
             </a>
         </div>
 
-        @await Html.PartialAsync("_CinemaSearchAndFilter", Model.Select(c => c.Location).Distinct())
+        <partial name="_CinemaSearchAndFilter" model="Model.Select(c=>c.Location).Distinct()" />
 
         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-3" id="cinemaContainer">
             @foreach (var cinema in Model.Take(8))

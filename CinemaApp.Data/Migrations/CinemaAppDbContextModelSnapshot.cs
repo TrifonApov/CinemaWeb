@@ -44,6 +44,57 @@ namespace CinemaApp.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Cinemas");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("344378cb-cc6c-446d-a513-e2c1b557be55"),
+                            IsDeleted = false,
+                            Location = "Sofia",
+                            Name = "Odeon"
+                        },
+                        new
+                        {
+                            Id = new Guid("1f904122-f663-4054-a2e1-593f06e1b43e"),
+                            IsDeleted = false,
+                            Location = "Sofia",
+                            Name = "House of Cinema"
+                        },
+                        new
+                        {
+                            Id = new Guid("e481ab5c-07f7-4c1c-a5eb-1307e757e6c6"),
+                            IsDeleted = false,
+                            Location = "Burgas",
+                            Name = "Arena Burgas"
+                        },
+                        new
+                        {
+                            Id = new Guid("0b759211-0e62-49fc-bb13-2f0aed97f859"),
+                            IsDeleted = false,
+                            Location = "Ruse",
+                            Name = "Arena Ruse"
+                        },
+                        new
+                        {
+                            Id = new Guid("2887e121-180c-4da4-a46e-764e8f02441c"),
+                            IsDeleted = false,
+                            Location = "Sofia",
+                            Name = "Cinema City Sofia"
+                        },
+                        new
+                        {
+                            Id = new Guid("28e27378-6d13-484a-9652-e55b0c3d1d66"),
+                            IsDeleted = false,
+                            Location = "Plovdiv",
+                            Name = "Cinema City Plovdiv"
+                        },
+                        new
+                        {
+                            Id = new Guid("c2e6c95c-a588-4cd8-8f7f-d11e7d6db49e"),
+                            IsDeleted = false,
+                            Location = "Varna",
+                            Name = "Cinema City Varna"
+                        });
                 });
 
             modelBuilder.Entity("CinemaApp.Data.Models.Movie", b =>

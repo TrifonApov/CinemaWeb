@@ -2,13 +2,11 @@
 
 namespace CinemaApp.Services.Core
 {
-    using System.Globalization;
     using CinemaApp.Data.Models;
     using CinemaApp.Data.Repository.Contracts;
     using CinemaApp.GCommon.Exceptions;
     using CinemaApp.Services.Core.Contracts;
     using CinemaApp.Services.Models.Movie;
-    using CinemaApp.Web.ViewModels.Movie;
     using static CinemaApp.GCommon.ApplicationConstants;
 
     public class MovieService : IMovieService

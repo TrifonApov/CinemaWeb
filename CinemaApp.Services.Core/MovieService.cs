@@ -41,7 +41,8 @@ namespace CinemaApp.Services.Core
             // Process Data
             IEnumerable<MovieAllDto> allMoviesDto = mapper
                 .Map<IEnumerable<MovieAllDto>>(allMoviesDb)
-                .OrderBy(m => m.Title)
+                .OrderBy(m => m.IsInUserWatchlist)
+                .ThenBy(m => m.Title)
                 .ThenBy(m => m.Genre)
                 .ThenBy(m => m.Director)
                 .ToArray();

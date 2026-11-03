@@ -28,6 +28,7 @@
                 .GetResult()
                 .Where(um => um.UserId.ToLower() == userId.ToLower())
                 .Select(um => um.Movie)
+                .OrderBy(um => um.Title)
                 .ToArray();
 
             IEnumerable<WatchlistMovieDto> watchlistMovieDtos = mapper

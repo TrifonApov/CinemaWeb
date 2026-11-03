@@ -43,12 +43,7 @@ namespace CinemaApp.Data.Models
         public virtual ICollection<UserMovie> MovieUsersWatchlist { get; set; }
             = new List<UserMovie>();
 
-        //public virtual ICollection<CinemaMovie> MovieCinemas { get; set; } 
-
-        //    = new HashSet<CinemaMovie>();
-
-
-        //public virtual ICollection<Ticket> Tickets { get; set; }
-        //    = new HashSet<Ticket>();
+        public virtual ICollection<Projection> Projections { get; set; }
+            = new HashSet<Projection>();
     }
 }

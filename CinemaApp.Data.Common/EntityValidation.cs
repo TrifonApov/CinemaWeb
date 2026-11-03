@@ -17,5 +17,17 @@
             public const int DurationMin = 1;
             public const int DurationMax = 300;
         }
+
+        public static class Cinema
+        {
+            public const int NameMaxLength = 80;
+
+            public const int LocationMaxLength = 50;
+        }
+
+        public static class Projection
+        {
+            public const string TicketPriceType = "decimal(9,2)";
+        }
     }
 }

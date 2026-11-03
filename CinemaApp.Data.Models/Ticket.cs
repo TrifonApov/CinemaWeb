@@ -1,21 +1,22 @@
-﻿namespace CinemaApp.Data.Models
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.AspNetCore.Identity;
+
+namespace CinemaApp.Data.Models
 {
     public class Ticket
     {
-        public Guid Id { get; set; }
+        [Key]
+        public Guid Id { get; set; } = Guid.NewGuid();
 
-        public decimal Price { get; set; }
+        [ForeignKey(nameof(Projection))]
+        public Guid ProjectionId { get; set; }
 
-        public Guid CinemaId { get; set; }
+        public virtual Projection? Projection { get; set; }
 
-        public virtual Cinema Cinema { get; set; } = null!;
+        [ForeignKey(nameof(User))]
+        public string UserId { get; set; } = null!;
 
-        public Guid MovieId { get; set; }
-
-        public virtual Movie Movie { get; set; } = null!;
-
-        public Guid UserId { get; set; }
-
-        public ApplicationUser User { get; set; } = null!;
+        public virtual IdentityUser User { get; set; } = null!;
     }
 }

@@ -1,9 +1,8 @@
-﻿using System.Reflection;
-
-namespace CinemaApp.Web.Infrastructure.Extensions
+﻿namespace CinemaApp.Web.Infrastructure.Extensions
 {
     using Microsoft.Extensions.DependencyInjection;
-    
+    using System.Reflection;
+
     public static class ApplicationBuilderExtensions
     {
         public static IServiceCollection RegisterRepositories(this IServiceCollection serviceCollection, Type repositoryType)

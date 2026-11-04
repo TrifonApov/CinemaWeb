@@ -1,6 +1,4 @@
-﻿using CinemaApp.Web.ViewModels.Cinema;
-
-namespace CinemaApp.Services.Core
+﻿namespace CinemaApp.Services.Core
 {
     using CinemaApp.Data.Repository.Contracts;
     using CinemaApp.Services.Core.Contracts;
@@ -42,10 +40,10 @@ namespace CinemaApp.Services.Core
             return allCinemasDtos;
         }
 
-        public async Task<CinemaProgramDetailsDto?> GetCinemaProgramByIdTask(Guid id)
+        public async Task<CinemaProgramDetailsDto?> GetCinemaProgramByIdTask(Guid cinemaId)
         {
             Cinema? cinema = await cinemaRepository
-                .GetCinemaByIdAsyncIncludeMovies(id);
+                .GetCinemaByIdAsyncIncludeMovies(cinemaId);
 
             if (cinema == null)
             {

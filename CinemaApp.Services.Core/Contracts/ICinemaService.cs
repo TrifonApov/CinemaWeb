@@ -6,6 +6,6 @@
     {
         Task<IEnumerable<CinemaAllDto>> GetAllCinemasOrderedByLocationAsync();
 
-        Task<CinemaProgramDetailsDto?> GetCinemaProgramByIdTask(Guid id);
+        Task<CinemaProgramDetailsDto?> GetCinemaProgramByIdTask(Guid cinemaId);
     }
 }

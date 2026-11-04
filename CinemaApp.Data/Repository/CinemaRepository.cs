@@ -46,6 +46,7 @@
                 .Cinemas
                 .Include(c => c.Projections)
                 .ThenInclude(p => p.Movie)
+                .Distinct()
                 .SingleOrDefaultAsync(c=>c.Id == cinemaId);
 
             return cinema;

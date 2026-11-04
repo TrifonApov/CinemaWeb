@@ -1,9 +1,8 @@
-﻿using AutoMapper;
-
-namespace CinemaApp.Services.Models.Cinema
+﻿namespace CinemaApp.Services.Models.Cinema
 {
     using CinemaApp.Services.AutoMapping;
     using CinemaApp.Data.Models;
+    using AutoMapper;
 
     public class CinemaProgramDetailsDto : IMapFrom<Cinema>, IHaveCustomMappings
     {
@@ -12,6 +11,7 @@ namespace CinemaApp.Services.Models.Cinema
         public string Name { get; set; } = null!;
 
         public ICollection<CinemaProgramMovieDto> ProjectionsMovies { get; set; } = null!;
+
         public void CreateMappings(IProfileExpression configuration)
         {
             configuration

@@ -410,6 +410,9 @@ namespace CinemaApp.Data.Migrations
                     b.Property<Guid>("ProjectionId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
                     b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");

@@ -23,10 +23,10 @@
         $("#cinemaNamePlaceholder").text(cinemaName);
 
         const showTimesSelect = $("#showtime");
+
         showTimesSelect.find("option")
-            .remove(); // Clear existing options
-        showTimesSelect.find("option")
-             .append('<option value="">Select Showtime...</option>');
+            .remove()
+            .append('<option value="">Select Showtime...</option>');
 
         $.ajax({
             url: `/api/MovieApi/GetShowtimes?movieId=${movieId}&cinemaId=${cinemaId}`,

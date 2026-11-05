@@ -9,6 +9,8 @@ namespace CinemaApp.Data.Models
         [Key]
         public Guid Id { get; set; } = Guid.NewGuid();
 
+        public int Quantity { get; set; }
+
         [ForeignKey(nameof(Projection))]
         public Guid ProjectionId { get; set; }
 

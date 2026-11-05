@@ -29,5 +29,20 @@
 
             return projections;
         }
+
+        public async Task<Projection?> GetByIdAsync(Guid id)
+        {
+            return await DbContext
+                .Projections
+                .FindAsync(id);
+        }
+
+        public async Task<bool> UpdateProjectionAsync(Projection projection)
+        {
+            DbContext.Projections.Update(projection);
+            int resultCount = await DbContext.SaveChangesAsync();
+
+            return resultCount == 1;
+        }
     }
 }

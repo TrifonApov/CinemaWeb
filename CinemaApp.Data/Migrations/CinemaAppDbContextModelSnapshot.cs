@@ -319,6 +319,12 @@ namespace CinemaApp.Data.Migrations
                     b.Property<decimal>("TicketPrice")
                         .HasColumnType("decimal(9,2)");
 
+                    b.Property<byte[]>("Version")
+                        .IsConcurrencyToken()
+                        .IsRequired()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
                     b.HasKey("Id");
 
                     b.HasIndex("MovieId");

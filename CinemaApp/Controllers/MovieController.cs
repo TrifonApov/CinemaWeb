@@ -146,7 +146,7 @@
 
                 await movieService.EditMovieAsync(id, movieDetailsDto);
             }
-            catch (EntityNotFoundException exception)
+            catch (EntityNotFoundException)
             {
                 return NotFound();
             }
@@ -196,7 +196,7 @@
             {
                 await movieService.SoftDeleteMovieAsync(id);
             }
-            catch (EntityNotFoundException exception)
+            catch (EntityNotFoundException)
             {
                 return NotFound();
             }

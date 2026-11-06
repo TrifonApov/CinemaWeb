@@ -27,6 +27,9 @@
         
         [Column(TypeName = EntityValidation.Projection.TicketPriceType)]
         public decimal TicketPrice { get; set; }
+        
+        [Timestamp]
+        public byte[] Version { get; set; } = null!;
 
         public ICollection<Ticket> Tickets { get; set; }
             = new List<Ticket>();

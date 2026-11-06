@@ -1,6 +1,3 @@
-using CinemaApp.Services.Core;
-using CinemaApp.Services.Core.Contracts;
-
 namespace CinemaApp.Web
 {
     using Microsoft.AspNetCore.Identity;
@@ -11,8 +8,8 @@ namespace CinemaApp.Web
     using CinemaApp.Services.Models.Movie;
     using CinemaApp.Web.Infrastructure.Extensions;
     using CinemaApp.Web.ViewModels.Movie;
-
-
+    using CinemaApp.Services.Core;
+    
     public class Program
     {
         public static void Main(string[] args)
@@ -34,12 +31,6 @@ namespace CinemaApp.Web
             builder.Services.RegisterRepositories(typeof(MovieRepository));
 
             builder.Services.RegisterUserServices(typeof(MovieService));
-
-            //builder.Services.AddScoped<IMovieRepository, MovieRepository>();
-            //builder.Services.AddScoped<IWatchlistRepository, WatchlistRepository>();
-
-            //builder.Services.AddScoped<IMovieService, MovieService>();
-            //builder.Services.AddScoped<IWatchlistService, WatchlistService>();
 
             builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<CinemaAppDbContext>();

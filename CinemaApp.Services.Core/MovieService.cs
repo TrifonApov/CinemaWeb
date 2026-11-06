@@ -2,13 +2,11 @@
 
 namespace CinemaApp.Services.Core
 {
-    using System.Globalization;
     using CinemaApp.Data.Models;
     using CinemaApp.Data.Repository.Contracts;
     using CinemaApp.GCommon.Exceptions;
     using CinemaApp.Services.Core.Contracts;
     using CinemaApp.Services.Models.Movie;
-    using CinemaApp.Web.ViewModels.Movie;
     using static CinemaApp.GCommon.ApplicationConstants;
 
     public class MovieService : IMovieService
@@ -41,7 +39,8 @@ namespace CinemaApp.Services.Core
             // Process Data
             IEnumerable<MovieAllDto> allMoviesDto = mapper
                 .Map<IEnumerable<MovieAllDto>>(allMoviesDb)
-                .OrderBy(m => m.Title)
+                .OrderBy(m => m.IsInUserWatchlist)
+                .ThenBy(m => m.Title)
                 .ThenBy(m => m.Genre)
                 .ThenBy(m => m.Director)
                 .ToArray();

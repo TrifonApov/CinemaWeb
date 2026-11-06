@@ -50,7 +50,7 @@
                 logger.LogError(eaee, string.Format(MovieAlreadyInWatchlistMessage, movieId, userId));
                 return BadRequest(string.Format(MovieAlreadyInWatchlistMessage, movieId, userId));
             }
-            catch (EntityNotFoundException enfe)
+            catch (EntityNotFoundException)
             {
                 return NotFound();
             }
@@ -73,7 +73,7 @@
             {
                 await watchlistService.RemoveFromUserWatchlist(userId, movieId);
             }
-            catch (EntityNotFoundException enfe)
+            catch (EntityNotFoundException)
             {
                 return BadRequest();
             }

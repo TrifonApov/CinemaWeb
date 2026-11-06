@@ -1,6 +1,3 @@
-using CinemaApp.Services.Core;
-using CinemaApp.Services.Core.Contracts;
-
 namespace CinemaApp.Web
 {
     using Microsoft.AspNetCore.Identity;
@@ -11,8 +8,8 @@ namespace CinemaApp.Web
     using CinemaApp.Services.Models.Movie;
     using CinemaApp.Web.Infrastructure.Extensions;
     using CinemaApp.Web.ViewModels.Movie;
-
-
+    using CinemaApp.Services.Core;
+    
     public class Program
     {
         public static void Main(string[] args)

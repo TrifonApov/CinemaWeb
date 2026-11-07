@@ -82,6 +82,7 @@ namespace CinemaApp.Web
             app.UseAuthorization();
 
             app.UseRoleSeeder();
+            app.UseAdminUserSeeder();
 
             app.MapControllerRoute(
                 name: "default",

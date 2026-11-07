@@ -10,6 +10,8 @@ namespace CinemaApp.Web
     using CinemaApp.Web.ViewModels.Movie;
     using CinemaApp.Services.Core;
     using Data.Models;
+    using Data.Seeding;
+    using Data.Seeding.Contracts;
 
     public class Program
     {
@@ -32,6 +34,9 @@ namespace CinemaApp.Web
             builder.Services.RegisterRepositories(typeof(MovieRepository));
 
             builder.Services.RegisterUserServices(typeof(MovieService));
+
+            builder.Services.AddTransient<IIdentitySeeder, IdentitySeeder>();
+            //builder.Services.AddScoped<IIdentitySeeder, IdentitySeeder>();
 
             builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddRoles<IdentityRole<Guid>>()
@@ -76,6 +81,7 @@ namespace CinemaApp.Web
             app.UseAuthentication();
             app.UseAuthorization();
 
+            app.UseRoleSeeder();
 
             app.MapControllerRoute(
                 name: "default",

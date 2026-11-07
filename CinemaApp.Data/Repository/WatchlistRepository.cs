@@ -22,7 +22,7 @@
         {
             UserMovie? userMovie = await DbContext
                 .UsersMovies
-                .SingleOrDefaultAsync(um => um.UserId.ToLower() == userId.ToLower() &&
+                .SingleOrDefaultAsync(um => um.UserId.ToString() == userId.ToLower() &&
                                             um.MovieId == movieId);
 
             return userMovie;
@@ -33,7 +33,7 @@
             UserMovie? userMovie = await DbContext
                 .UsersMovies
                 .IgnoreQueryFilters()
-                .SingleOrDefaultAsync(um => um.UserId.ToLower() == userId.ToLower() &&
+                .SingleOrDefaultAsync(um => um.UserId.ToString() == userId.ToLower() &&
                                             um.MovieId == movieId);
 
             return userMovie;
@@ -43,7 +43,7 @@
         {
             bool watchlistEntryExist = await DbContext
                 .UsersMovies
-                .AnyAsync(um => um.UserId == userId &&
+                .AnyAsync(um => um.UserId.ToString() == userId &&
                                 um.MovieId == movieId);
 
             return watchlistEntryExist;

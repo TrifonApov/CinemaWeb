@@ -26,7 +26,7 @@
                 .GetAllUserMoviesAsync()
                 .GetAwaiter()
                 .GetResult()
-                .Where(um => um.UserId.ToLower() == userId.ToLower())
+                .Where(um => um.UserId.ToString() == userId)
                 .Select(um => um.Movie)
                 .OrderBy(um => um.Title)
                 .ToArray();
@@ -77,7 +77,7 @@
                 UserMovie newUserMovie = new UserMovie()
                 {
                     MovieId = movieId,
-                    UserId = userId
+                    UserId = Guid.Parse(userId)
                 };
 
                 successPersist = await watchlistRepository.AddUserMovieAsync(newUserMovie);

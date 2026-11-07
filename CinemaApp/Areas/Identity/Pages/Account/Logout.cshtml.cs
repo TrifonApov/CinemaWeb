@@ -5,12 +5,14 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace CinemaApp.Web.Areas.Identity.Pages.Account
 {
+    using Data.Models;
+
     [AllowAnonymous]
     public class LogoutModel : PageModel
     {
-        private readonly SignInManager<IdentityUser> signInManager;
+        private readonly SignInManager<ApplicationUser> signInManager;
 
-        public LogoutModel(SignInManager<IdentityUser> signInManager)
+        public LogoutModel(SignInManager<ApplicationUser> signInManager)
         {
             this.signInManager = signInManager;
         }

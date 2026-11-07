@@ -1,9 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.AspNetCore.Identity;
-
-namespace CinemaApp.Data.Models
+﻿namespace CinemaApp.Data.Models
 {
+    using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
+
     public class Ticket
     {
         [Key]
@@ -17,8 +16,8 @@ namespace CinemaApp.Data.Models
         public virtual Projection? Projection { get; set; }
 
         [ForeignKey(nameof(User))]
-        public string UserId { get; set; } = null!;
+        public Guid UserId { get; set; }
 
-        public virtual IdentityUser User { get; set; } = null!;
+        public virtual ApplicationUser User { get; set; } = null!;
     }
 }

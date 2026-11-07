@@ -7,13 +7,15 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace CinemaApp.Web.Areas.Identity.Pages.Account
 {
+    using Data.Models;
+
     [AllowAnonymous]
     public class RegisterModel : PageModel
     {
-        private readonly UserManager<IdentityUser> userManager;
-        private readonly SignInManager<IdentityUser> signInManager;
+        private readonly UserManager<ApplicationUser> userManager;
+        private readonly SignInManager<ApplicationUser> signInManager;
 
-        public RegisterModel(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
+        public RegisterModel(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
@@ -29,6 +31,11 @@ namespace CinemaApp.Web.Areas.Identity.Pages.Account
             [Required]
             [EmailAddress]
             public string Email { get; set; } = default!;
+
+            [Required]
+            [DataType(DataType.Date)]
+            [Display(Name = "Date of Birth")]
+            public DateTime Birthdate { get; set; } = default!;
 
             [Required]
             [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = MinPasswordLength)]
@@ -61,7 +68,7 @@ namespace CinemaApp.Web.Areas.Identity.Pages.Account
                 return Page();
             }
 
-            var user = new IdentityUser();
+            var user = new ApplicationUser();
             
             await userManager.SetUserNameAsync(user, Input.Email);
             await userManager.SetEmailAsync(user, Input.Email);

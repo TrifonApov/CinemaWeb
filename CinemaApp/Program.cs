@@ -9,7 +9,8 @@ namespace CinemaApp.Web
     using CinemaApp.Web.Infrastructure.Extensions;
     using CinemaApp.Web.ViewModels.Movie;
     using CinemaApp.Services.Core;
-    
+    using Data.Models;
+
     public class Program
     {
         public static void Main(string[] args)
@@ -32,7 +33,8 @@ namespace CinemaApp.Web
 
             builder.Services.RegisterUserServices(typeof(MovieService));
 
-            builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+            builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
+                .AddRoles<IdentityRole<Guid>>()
                 .AddEntityFrameworkStores<CinemaAppDbContext>();
 
             builder.Services.AddControllersWithViews();

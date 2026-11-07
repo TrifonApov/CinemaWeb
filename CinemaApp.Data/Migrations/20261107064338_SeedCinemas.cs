@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace CinemaApp.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class SeedCinemaData : Migration
+    public partial class SeedCinemas : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

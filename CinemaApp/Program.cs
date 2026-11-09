@@ -12,6 +12,8 @@ namespace CinemaApp.Web
     using Data.Models;
     using Data.Seeding;
     using Data.Seeding.Contracts;
+    using Infrastructure.Utilities;
+    using Infrastructure.Utilities.Contracts;
 
     public class Program
     {
@@ -36,7 +38,8 @@ namespace CinemaApp.Web
             builder.Services.RegisterUserServices(typeof(MovieService));
 
             builder.Services.AddTransient<IIdentitySeeder, IdentitySeeder>();
-            //builder.Services.AddScoped<IIdentitySeeder, IdentitySeeder>();
+
+            builder.Services.AddSingleton<ISlugGenerator, SlugGenerator>();
 
             builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddRoles<IdentityRole<Guid>>()
@@ -87,6 +90,9 @@ namespace CinemaApp.Web
             app.MapControllerRoute(
                 name:"adminArea",
                 pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+            app.MapControllerRoute(
+                name: "slugRoute",
+                pattern: "{controller=Home}/{action=Index}/{id:required}/{slug:required}");
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");

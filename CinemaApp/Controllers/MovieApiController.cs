@@ -7,6 +7,7 @@
     [Route("api/[controller]")]
     [Authorize]
     [ApiController]
+    [AutoValidateAntiforgeryToken]
     public class MovieApiController : ControllerBase
     {
         private readonly IProjectionService projectionService;

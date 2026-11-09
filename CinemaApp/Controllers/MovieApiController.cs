@@ -1,13 +1,16 @@
 ﻿namespace CinemaApp.Web.Controllers
 {
     using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Cors;
     using Microsoft.AspNetCore.Mvc;
     using Services.Core.Contracts;
+    using static GCommon.ApplicationConstants;
 
     [Route("api/[controller]")]
     [Authorize]
     [ApiController]
     [AutoValidateAntiforgeryToken]
+    [EnableCors(MvcDomainPolicyName)]
     public class MovieApiController : ControllerBase
     {
         private readonly IProjectionService projectionService;

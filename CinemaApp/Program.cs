@@ -14,7 +14,7 @@ namespace CinemaApp.Web
     using Data.Seeding.Contracts;
     using Infrastructure.Utilities;
     using Infrastructure.Utilities.Contracts;
-
+    using static GCommon.ApplicationConstants;
     public class Program
     {
         public static void Main(string[] args)
@@ -44,6 +44,17 @@ namespace CinemaApp.Web
             builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddRoles<IdentityRole<Guid>>()
                 .AddEntityFrameworkStores<CinemaAppDbContext>();
+
+            builder.Services.AddCors(config =>
+            {
+                config.AddPolicy(MvcDomainPolicyName, corsPolicyBuilder =>
+                {
+                    corsPolicyBuilder
+                        .WithOrigins("https://localhost:7180")
+                        .WithMethods("GET", "POST")
+                        .AllowAnyHeader();
+                });
+            });
 
             builder.Services.AddControllersWithViews();
 
@@ -80,6 +91,8 @@ namespace CinemaApp.Web
             app.UseRouting();
             
             app.UseStatusCodePagesWithRedirects("/Home/Error/{0}");
+
+            app.UseCors(MvcDomainPolicyName);
 
             app.UseAuthentication();
             app.UseAuthorization();

@@ -1,5 +1,6 @@
 ﻿namespace CinemaApp.Data.Repository
 {
+    using System.Linq.Expressions;
     using CinemaApp.Data.Models;
     using CinemaApp.Data.Repository.Contracts;
     using Microsoft.EntityFrameworkCore;
@@ -8,17 +9,26 @@
     {
         public MovieRepository(CinemaAppDbContext dbContext) :base(dbContext) { }
 
-        public async Task<IEnumerable<Movie>> GelAllMoviesNoTrackingWithProjectionAsync(Func<Movie, Movie>? projectFunc = null)
+        public async Task<IEnumerable<Movie>> GelAllMoviesNoTrackingWithProjectionAsync(
+            Expression<Func<Movie, Movie>>? projectFunc = null,
+            Expression<Func<Movie, bool>>? filterQuery = null)
         {
             IQueryable<Movie> moviesFetchQuery = DbContext
                 .Movies
                 .AsNoTracking()
                 .OrderBy(m => m.Title);
 
+            if (filterQuery != null)
+            {
+                moviesFetchQuery = moviesFetchQuery
+                    .Where(filterQuery)
+                    .AsQueryable();
+            }
+
             if (projectFunc != null)
             {
                 moviesFetchQuery = moviesFetchQuery
-                    .Select(m => projectFunc(m))
+                    .Select(projectFunc)
                     .AsQueryable();
             }
 

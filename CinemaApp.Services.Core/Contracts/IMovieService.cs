@@ -5,7 +5,7 @@
 
     public interface IMovieService
     {
-        Task<IEnumerable<MovieAllDto>> GetAllMoviesOrderedByTitleAsync(string? userId = null);
+        Task<IEnumerable<MovieAllDto>> GetAllMoviesOrderedByTitleAsync(string? userId = null, string? searchQuery = null);
         
         Task CreateMovieAsync(MovieDetailsDto movieFormViewModel);
 

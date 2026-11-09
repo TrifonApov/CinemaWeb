@@ -24,15 +24,17 @@
 
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index([FromQuery]string? searchQuery)
         {
             string? userId = GetUserId();
 
             IEnumerable<MovieAllDto> movieAllDtos = await movieService
-                .GetAllMoviesOrderedByTitleAsync(userId);
+                .GetAllMoviesOrderedByTitleAsync(userId, searchQuery);
 
             IEnumerable<AllMoviesIndexViewModel> allMovies = mapper
                 .Map<IEnumerable<AllMoviesIndexViewModel>>(movieAllDtos);
+
+            ViewData["SearchQuery"] = searchQuery?.Trim();
 
             return View(allMovies);
         }

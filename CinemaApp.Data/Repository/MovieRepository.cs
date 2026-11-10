@@ -11,12 +11,15 @@
 
         public async Task<IEnumerable<Movie>> GelAllMoviesNoTrackingWithProjectionAsync(
             Expression<Func<Movie, Movie>>? projectFunc = null,
-            Expression<Func<Movie, bool>>? filterQuery = null)
+            Expression<Func<Movie, bool>>? filterQuery = null,
+            int? skipCount = null,
+            int? takeCount = null)
         {
             IQueryable<Movie> moviesFetchQuery = DbContext
                 .Movies
                 .AsNoTracking()
-                .OrderBy(m => m.Title);
+                .OrderBy(m => m.Title)
+                .ThenBy(m => m.Id);
 
             if (filterQuery != null)
             {
@@ -29,6 +32,20 @@
             {
                 moviesFetchQuery = moviesFetchQuery
                     .Select(projectFunc)
+                    .AsQueryable();
+            }
+
+            if (skipCount.HasValue && skipCount.Value > 0)
+            {
+                moviesFetchQuery = moviesFetchQuery
+                    .Skip(skipCount.Value)
+                    .AsQueryable();
+            }
+
+            if (takeCount.HasValue && takeCount.Value > 0)
+            {
+                moviesFetchQuery = moviesFetchQuery
+                    .Take(takeCount.Value)
                     .AsQueryable();
             }
 
@@ -92,6 +109,20 @@
             return resultCount == 1;
         }
 
-        
+        public async Task<int> CountAsync(Expression<Func<Movie, bool>>? filterQuery = null)
+        {
+            IQueryable<Movie> moviesFetchQuery = DbContext
+                .Movies
+                .AsNoTracking();
+
+            if (filterQuery != null)
+            {
+                moviesFetchQuery = moviesFetchQuery
+                    .Where(filterQuery);
+            }
+
+            int movieCount = await moviesFetchQuery.CountAsync();
+            return movieCount;
+        }
     }
 }

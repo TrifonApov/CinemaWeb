@@ -26,7 +26,7 @@ namespace CinemaApp.Web
                 .Configuration
                 .GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
             
-            AutoMapperConfig.RegisterMappings(typeof(MovieAllDto).Assembly, typeof(AllMoviesIndexViewModel).Assembly);
+            AutoMapperConfig.RegisterMappings(typeof(MovieAllDto).Assembly, typeof(MoviesIndexViewModel).Assembly);
 
             builder.Services.AddDbContext<CinemaAppDbContext>(options =>
                 options.UseSqlServer(connectionString));

@@ -5,6 +5,7 @@
     using CinemaApp.Services.Core.Contracts;
     using CinemaApp.Services.Models.Movie;
     using CinemaApp.Web.ViewModels.Movie;
+    using GCommon;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using static CinemaApp.GCommon.OutputMessages.Movie;
@@ -24,19 +25,30 @@
 
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> Index([FromQuery]string? searchQuery)
+        public async Task<IActionResult> Index(MoviesAllIndexViewModel moviesAllIndexInput)
         {
             string? userId = GetUserId();
 
             IEnumerable<MovieAllDto> movieAllDtos = await movieService
-                .GetAllMoviesOrderedByTitleAsync(userId, searchQuery);
+                .GetAllMoviesOrderedByTitleAsync(userId, moviesAllIndexInput.SearchQuery, moviesAllIndexInput.PageNumber);
 
-            IEnumerable<AllMoviesIndexViewModel> allMovies = mapper
-                .Map<IEnumerable<AllMoviesIndexViewModel>>(movieAllDtos);
+            int moviesCount = await movieService.GetMoviesCountAsync(moviesAllIndexInput.SearchQuery);
+            
+            IEnumerable<MoviesIndexViewModel> allMovies = mapper
+                .Map<IEnumerable<MoviesIndexViewModel>>(movieAllDtos);
 
-            ViewData["SearchQuery"] = searchQuery?.Trim();
+            MoviesAllIndexViewModel allMoviesViewModel = new MoviesAllIndexViewModel
+            {
+                SearchQuery = moviesAllIndexInput.SearchQuery,
+                PageNumber = moviesAllIndexInput.PageNumber,
+                TotalPages = (int)Math.Ceiling(moviesCount / (double)DefaultEntitiesPerPage),
+                ShowingPages = moviesAllIndexInput.ShowingPages,
+                StartPageIndex = (moviesAllIndexInput.PageNumber/10) * 10,
+                Movies = allMovies.ToArray()
+            };
 
-            return View(allMovies);
+           
+            return View(allMoviesViewModel);
         }
 
         [HttpGet]

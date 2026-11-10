@@ -23,18 +23,23 @@ namespace CinemaApp.Services.Core
             this.watchlistRepository = watchlistRepository;
         }
 
-        public async Task<IEnumerable<MovieAllDto>> GetAllMoviesOrderedByTitleAsync(string? userId = null, string? searchQuery = null)
+        public async Task<IEnumerable<MovieAllDto>> GetAllMoviesOrderedByTitleAsync(
+            string? userId = null, 
+            string? searchQuery = null,
+            int pageNumber = 1,
+            int moviesPerPage = 10)
         {
-            Expression<Func<Movie, bool>>? fQuery = null;
+            Expression<Func<Movie, bool>>? filterQuery = null;
 
             if (!string.IsNullOrWhiteSpace(searchQuery))
             {
                 searchQuery = searchQuery.Trim().ToLower();
-                fQuery = m => m.Title.ToLower().Contains(searchQuery)
+                filterQuery = m => m.Title.ToLower().Contains(searchQuery)
                               || m.Genre.ToLower().Contains(searchQuery)
                               || m.Director.ToLower().Contains(searchQuery);
             }
-
+            int skipCount = (pageNumber - 1) * moviesPerPage;
+            
             // Fetch Data
             IEnumerable<Movie> allMoviesDb = await movieRepository
                 .GelAllMoviesNoTrackingWithProjectionAsync(
@@ -47,7 +52,9 @@ namespace CinemaApp.Services.Core
                         Director = m.Director,
                         ImageUrl = m.ImageUrl ?? DefaultImageUrl
                     },
-                    filterQuery: fQuery);
+                    filterQuery: filterQuery,
+                    skipCount: skipCount,
+                    takeCount: moviesPerPage);
 
             // Process Data
             IEnumerable<MovieAllDto> allMoviesDto = mapper
@@ -68,6 +75,23 @@ namespace CinemaApp.Services.Core
             // Return Processed Data
             return allMoviesDto;
 
+        }
+
+        public async Task<int> GetMoviesCountAsync(string? searchQuery = null)
+        {
+            Expression<Func<Movie, bool>>? filterQuery = null;
+
+            if (!string.IsNullOrWhiteSpace(searchQuery))
+            {
+                searchQuery = searchQuery.Trim().ToLower();
+                filterQuery = m => m.Title.ToLower().Contains(searchQuery)
+                                   || m.Genre.ToLower().Contains(searchQuery)
+                                   || m.Director.ToLower().Contains(searchQuery);
+            }
+
+            int movieCount = await movieRepository.CountAsync(filterQuery);
+            
+            return movieCount;
         }
 
         public async Task<MovieDetailsDto?> GetMovieDetailsByIdAsync(Guid id)

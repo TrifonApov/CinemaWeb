@@ -14,5 +14,6 @@
         public const string SuccessTempDataKey = "SuccessMessage";
 
         public const string MvcDomainPolicyName = "AllowMvcDomain";
+        public const int DefaultEntitiesPerPage = 10;
     }
 }

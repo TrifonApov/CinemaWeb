@@ -21,6 +21,7 @@
         }
 
         [Route("BuyTicket")]
+        [ValidateAntiForgeryToken]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]

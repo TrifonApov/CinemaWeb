@@ -2,11 +2,18 @@
 {
     using CinemaApp.Web.ViewModels.Movie;
     using CinemaApp.Services.Models.Movie;
+    using static GCommon.ApplicationConstants;
 
     public interface IMovieService
     {
-        Task<IEnumerable<MovieAllDto>> GetAllMoviesOrderedByTitleAsync(string? userId = null);
-        
+        Task<IEnumerable<MovieAllDto>> GetAllMoviesOrderedByTitleAsync(
+            string? userId = null,
+            string? searchQuery = null,
+            int pageNumber = 1,
+            int moviesPerPage = DefaultEntitiesPerPage);
+
+        Task<int> GetMoviesCountAsync(string? searchQuery = null);
+
         Task CreateMovieAsync(MovieDetailsDto movieFormViewModel);
 
         Task<MovieDetailsDto?> GetMovieDetailsByIdAsync(Guid id);

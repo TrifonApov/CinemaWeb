@@ -1,11 +1,9 @@
-﻿using CinemaApp.Data.Models;
-using System;
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
-
-namespace CinemaApp.Data.Configuration
+﻿namespace CinemaApp.Data.Configuration
 {
+    using CinemaApp.Data.Models;
+    using Microsoft.EntityFrameworkCore;
+    using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
     public class CinemaConfiguration : IEntityTypeConfiguration<Cinema>
     {
         public void Configure(EntityTypeBuilder<Cinema> entity)

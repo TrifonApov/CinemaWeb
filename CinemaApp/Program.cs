@@ -9,7 +9,12 @@ namespace CinemaApp.Web
     using CinemaApp.Web.Infrastructure.Extensions;
     using CinemaApp.Web.ViewModels.Movie;
     using CinemaApp.Services.Core;
-    
+    using Data.Models;
+    using Data.Seeding;
+    using Data.Seeding.Contracts;
+    using Infrastructure.Utilities;
+    using Infrastructure.Utilities.Contracts;
+    using static GCommon.ApplicationConstants;
     public class Program
     {
         public static void Main(string[] args)
@@ -21,7 +26,7 @@ namespace CinemaApp.Web
                 .Configuration
                 .GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
             
-            AutoMapperConfig.RegisterMappings(typeof(MovieAllDto).Assembly, typeof(AllMoviesIndexViewModel).Assembly);
+            AutoMapperConfig.RegisterMappings(typeof(MovieAllDto).Assembly, typeof(MoviesIndexViewModel).Assembly);
 
             builder.Services.AddDbContext<CinemaAppDbContext>(options =>
                 options.UseSqlServer(connectionString));
@@ -32,8 +37,24 @@ namespace CinemaApp.Web
 
             builder.Services.RegisterUserServices(typeof(MovieService));
 
-            builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+            builder.Services.AddTransient<IIdentitySeeder, IdentitySeeder>();
+
+            builder.Services.AddSingleton<ISlugGenerator, SlugGenerator>();
+
+            builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
+                .AddRoles<IdentityRole<Guid>>()
                 .AddEntityFrameworkStores<CinemaAppDbContext>();
+
+            builder.Services.AddCors(config =>
+            {
+                config.AddPolicy(MvcDomainPolicyName, corsPolicyBuilder =>
+                {
+                    corsPolicyBuilder
+                        .WithOrigins("https://localhost:7180")
+                        .WithMethods("GET", "POST")
+                        .AllowAnyHeader();
+                });
+            });
 
             builder.Services.AddControllersWithViews();
 
@@ -71,13 +92,24 @@ namespace CinemaApp.Web
             
             app.UseStatusCodePagesWithRedirects("/Home/Error/{0}");
 
+            app.UseCors(MvcDomainPolicyName);
+
             app.UseAuthentication();
             app.UseAuthorization();
 
+            app.UseRoleSeeder();
+            app.UseAdminUserSeeder();
 
+            app.MapControllerRoute(
+                name:"adminArea",
+                pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+            app.MapControllerRoute(
+                name: "slugRoute",
+                pattern: "{controller=Home}/{action=Index}/{id:required}/{slug:required}");
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
+
             app.MapRazorPages();
             
             app.Run();

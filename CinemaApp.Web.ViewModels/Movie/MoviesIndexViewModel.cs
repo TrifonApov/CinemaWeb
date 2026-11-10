@@ -6,7 +6,7 @@ namespace CinemaApp.Web.ViewModels.Movie
     using CinemaApp.Services.Models.Movie;
     using CinemaApp.Services.AutoMapping;
     using static CinemaApp.GCommon.ApplicationConstants;
-    public class AllMoviesIndexViewModel : IMapFrom<MovieAllDto>, IHaveCustomMappings
+    public class MoviesIndexViewModel : IMapFrom<MovieAllDto>, IHaveCustomMappings
     {
         public Guid Id { get; set; }
         public string Title { get; set; } = null!;
@@ -23,7 +23,7 @@ namespace CinemaApp.Web.ViewModels.Movie
 
         public void CreateMappings(IProfileExpression configuration)
         {
-            configuration.CreateMap<MovieAllDto, AllMoviesIndexViewModel>()
+            configuration.CreateMap<MovieAllDto, MoviesIndexViewModel>()
                 .ForMember(d => d.ReleaseDate,
                     y => y.MapFrom(s => s.ReleaseDate.ToString(DefaultDateFormat, CultureInfo.InvariantCulture)));
         }

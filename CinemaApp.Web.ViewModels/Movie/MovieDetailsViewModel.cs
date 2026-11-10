@@ -26,7 +26,7 @@ namespace CinemaApp.Web.ViewModels.Movie
 
         public void CreateMappings(IProfileExpression configuration)
         {
-            configuration.CreateMap<MovieAllDto, AllMoviesIndexViewModel>()
+            configuration.CreateMap<MovieAllDto, MoviesIndexViewModel>()
                 .ForMember(d => d.ReleaseDate,
                     y => y.MapFrom(s => s.ReleaseDate.ToString(DefaultDateFormat, CultureInfo.InvariantCulture)));
         }

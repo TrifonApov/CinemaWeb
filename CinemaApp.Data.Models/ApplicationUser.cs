@@ -4,15 +4,12 @@
 
     public class ApplicationUser : IdentityUser<Guid>
     {
-        public ApplicationUser()
-        {
-            this.Id = Guid.NewGuid();
-        }
-
-        public virtual ICollection<ApplicationUserMovie> ApplicationUserMovies { get; set; }
-            = new HashSet<ApplicationUserMovie>();
+        public DateTime Birthdate { get; set; }
 
         public virtual ICollection<Ticket> Tickets { get; set; }
-            = new HashSet<Ticket>();
+            = new List<Ticket>();
+
+        public virtual ICollection<UserMovie> UserWatchlist { get; set; } 
+            = new List<UserMovie>();
     }
 }

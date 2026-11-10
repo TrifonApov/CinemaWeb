@@ -8,12 +8,14 @@ using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
 
 namespace CinemaApp.Web.Areas.Identity.Pages.Account
 {
+    using Data.Models;
+
     [AllowAnonymous]
     public class LoginModel : PageModel
     {
-        private readonly SignInManager<IdentityUser> signInManager;
+        private readonly SignInManager<ApplicationUser> signInManager;
 
-        public LoginModel(SignInManager<IdentityUser> signInManager)
+        public LoginModel(SignInManager<ApplicationUser> signInManager)
         {
             this.signInManager = signInManager;
         }

@@ -1,7 +1,7 @@
 ﻿$(document).ready(function () {
     $(".buy-ticket-btn").on("click", function (e) {
-        // e.preventDefault();
-        // e.stopPropagation();
+        e.preventDefault();
+        e.stopPropagation();
 
         const cinemaId = $(this).attr("data-cinema-id");
         const cinemaName = $(this).attr("data-cinema-name");

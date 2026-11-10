@@ -41,5 +41,14 @@
             public const string AddToWatchlistErrorMessage = "An error occured while adding the movie to your watchlist.";
             public const string RemoveFromWatchlistErrorMessage = "An error occured while removing the movie from your watchlist.";
         }
+
+        public static class ApplicationUser
+        {
+            public const int MinimumAgeRequirement = 14;
+            public const string UserNotFoundMessage = "There is no such user";
+            public const string UserAlreadyExistsMessage = "The user with email {0} already exists.";
+            public const string UserCreationErrorMessage = "An error occured while creating the user.";
+            public static readonly string UserAgeBelowMinimum = $"You must be at least {MinimumAgeRequirement} years old to register.";
+        }
     }
 }

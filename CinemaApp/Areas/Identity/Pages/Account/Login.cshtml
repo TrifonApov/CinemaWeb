@@ -20,6 +20,7 @@
             <div class="mb-3">
                 <label asp-for="Input.Password" class="form-label">Password</label>
                 <input asp-for="Input.Password" class="form-control" />
+                <input type="checkbox" onclick="showPassword()">Show Password
                 <span asp-validation-for="Input.Password" class="text-danger"></span>
             </div>
 
@@ -33,3 +34,14 @@
         </form>
     </div>
 </div>
+
+<script>
+    function showPassword() {
+        var x = document.getElementById("Input_Password");
+        if (x.type === "password") {
+            x.type = "text";
+        } else {
+            x.type = "password";
+        }
+    }
+</script>

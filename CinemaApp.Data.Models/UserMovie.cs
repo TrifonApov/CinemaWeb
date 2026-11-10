@@ -8,9 +8,9 @@ namespace CinemaApp.Data.Models
     public class UserMovie
     {
         [ForeignKey(nameof(User))]
-        public string UserId { get; set; } = null!;
+        public Guid UserId { get; set; }
 
-        public virtual IdentityUser User { get; set; } = null!;
+        public virtual ApplicationUser User { get; set; } = null!;
 
         [ForeignKey(nameof(Movie))]
         public Guid MovieId { get; set; }

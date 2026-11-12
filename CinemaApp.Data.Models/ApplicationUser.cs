@@ -6,6 +6,8 @@
     {
         public DateTime Birthdate { get; set; }
 
+        public Manager? Manager { get; set; }
+
         public virtual ICollection<Ticket> Tickets { get; set; }
             = new List<Ticket>();
 

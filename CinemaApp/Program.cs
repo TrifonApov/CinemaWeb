@@ -104,6 +104,9 @@ namespace CinemaApp.Web
                 name:"adminArea",
                 pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
             app.MapControllerRoute(
+                name: "managerArea",
+                pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+            app.MapControllerRoute(
                 name: "slugRoute",
                 pattern: "{controller=Home}/{action=Index}/{id:required}/{slug:required}");
             app.MapControllerRoute(

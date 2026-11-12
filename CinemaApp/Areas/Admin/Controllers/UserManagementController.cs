@@ -1,13 +1,14 @@
 ﻿namespace CinemaApp.Web.Areas.Admin.Controllers
 {
-    using System.Collections;
     using AutoMapper;
+    using CinemaApp.GCommon.Exceptions;
     using Data.Seeding;
     using Microsoft.AspNetCore.Mvc;
     using Services.Core.Contracts;
     using Services.Models.ApplicationUser;
     using ViewModels.Admin.User;
-
+    using static CinemaApp.GCommon.ApplicationConstants;
+    using static CinemaApp.GCommon.OutputMessages.ApplicationUser;
     public class UserManagementController : BaseAdminController
     {
         private readonly IUserService userService;
@@ -34,19 +35,84 @@
             return View(userManageViewModels);
         }
 
-        public Task<IActionResult> AssignRole()
+        public async Task<IActionResult> AssignRole(Guid userId, string role)
         {
-            throw new NotImplementedException();
+            try
+            {
+                bool assignRoleResult = await userService.AssignRoleToUserAsync(userId, role);
+                if (!assignRoleResult)
+                {
+                    TempData[ErrorTempDataKey] = string.Format(UserRoleAssignmentIdentityErrorMessage, role);
+
+                    return RedirectToAction(nameof(Index));
+                }
+            }
+            catch (EntityInputDataFormatException)
+            {
+                return BadRequest();
+            }
+            catch (Exception ex)
+            {
+                TempData[ErrorTempDataKey] = string.Format(UserRoleAssignmentFailureMessage, role, "assigning");
+
+                return RedirectToAction(nameof(Index));
+            }
+
+            return RedirectToAction(nameof(Index));
         }
 
-        public Task<IActionResult> RemoveRole()
+        public async Task<IActionResult> RemoveRole(Guid userId, string role)
         {
-            throw new NotImplementedException();
+            try
+            {
+                bool removeRoleResult = await userService
+                    .RemoveRoleFromUserAsync(userId, role);
+                if (!removeRoleResult)
+                {
+                    TempData[ErrorTempDataKey] = string.Format(UserRoleRemoveIdentityErrorMessage, role);
+
+                    return RedirectToAction(nameof(Index));
+                }
+            }
+            catch (EntityInputDataFormatException)
+            {
+                return BadRequest();
+            }
+            catch (Exception)
+            {
+                TempData[ErrorTempDataKey] = string.Format(UserRoleAssignmentFailureMessage, role, "removing");
+
+                return RedirectToAction(nameof(Index));
+            }
+
+            return RedirectToAction(nameof(Index));
         }
 
-        public Task<IActionResult> DeleteUser()
+        public async Task<IActionResult> DeleteUser(Guid userId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                bool deleteResult = await userService
+                    .DeleteUserAsync(userId);
+                if (!deleteResult)
+                {
+                    TempData[ErrorTempDataKey] = UserDeleteNotExistMessage;
+
+                    return RedirectToAction(nameof(Index));
+                }
+            }
+            catch (EntityInputDataFormatException eidfe)
+            {
+                return BadRequest();
+            }
+            catch (Exception ex)
+            {
+                TempData[ErrorTempDataKey] = UserDeleteFailureErrorMessage;
+
+                return RedirectToAction(nameof(Index));
+            }
+
+            return RedirectToAction(nameof(Index));
         }
     }
 }

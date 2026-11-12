@@ -1,6 +1,7 @@
 ﻿namespace CinemaApp.Services.Core
 {
     using AutoMapper;
+    using CinemaApp.GCommon.Exceptions;
     using Contracts;
     using Data.Models;
     using Data.Repository.Contracts;
@@ -35,6 +36,45 @@
             }
 
             return userManageAllDtos;
+        }
+
+        public async Task<bool> AssignRoleToUserAsync(Guid userId, string role)
+        {
+            if (userId == Guid.Empty || string.IsNullOrWhiteSpace(role))
+            {
+                throw new EntityInputDataFormatException();
+            }
+
+            bool result = await userRepository
+                .UpdateUserRoleAsync(userId, role);
+
+            return result;
+        }
+
+        public async Task<bool> RemoveRoleFromUserAsync(Guid userId, string role)
+        {
+            if (userId == Guid.Empty || string.IsNullOrWhiteSpace(role))
+            {
+                throw new EntityInputDataFormatException();
+            }
+
+            bool result = await userRepository
+                .UpdateUserRoleAsync(userId, role, removingRole: true);
+
+            return result;
+        }
+
+        public async Task<bool> DeleteUserAsync(Guid userId)
+        {
+            if (userId == Guid.Empty)
+            {
+                throw new EntityInputDataFormatException();
+            }
+
+            bool result = await userRepository
+                .DeleteUserAsync(userId);
+
+            return result;
         }
     }
 }

@@ -5,6 +5,7 @@
     using Microsoft.AspNetCore.Identity;
     using Microsoft.EntityFrameworkCore;
     using Models;
+    using static GCommon.OutputMessages.ApplicationUser;
 
     public class UserRepository : BaseRepository, IUserRepository
     {
@@ -49,6 +50,76 @@
             IEnumerable<string> userRoles = await userManager.GetRolesAsync(user);
 
             return userRoles;
+        }
+
+        public async Task<bool> UpdateUserRoleAsync(Guid userId, string role, bool removingRole = false)
+        {
+            ApplicationUser? user = await userManager
+                .FindByIdAsync(userId.ToString());
+
+            if (user == null)
+            {
+                return false;
+            }
+
+            bool roleExists = await roleManager.RoleExistsAsync(role);
+            if (!roleExists)
+            {
+                return false;
+            }
+
+            bool userAlreadyHasRole = await userManager.IsInRoleAsync(user, role);
+            if (userAlreadyHasRole && !removingRole)
+            {
+                return false;
+            }
+
+            if (removingRole && !userAlreadyHasRole)
+            {
+                return false;
+            }
+
+
+            IdentityResult result;
+            if (removingRole)
+            {
+                result = await userManager
+                    .RemoveFromRoleAsync(user, role);
+            }
+            else
+            {
+                result = await userManager
+                    .AddToRoleAsync(user, role);
+            }
+
+
+            if (!result.Succeeded)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        public async Task<bool> DeleteUserAsync(Guid userId)
+        {
+            ApplicationUser? user = await userManager
+                .FindByIdAsync(userId.ToString());
+
+            if (user == null)
+            {
+                return false;
+            }
+
+            IdentityResult result = await userManager
+                .DeleteAsync(user);
+
+            if (!result.Succeeded)
+            {
+                return false;
+            }
+
+            return true;
         }
     }
 }

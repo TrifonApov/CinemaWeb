@@ -9,5 +9,8 @@
             Expression<Func<ApplicationUser,ApplicationUser>>? projectionQuery = null);
 
         Task<IEnumerable<string>> GetUserRolesAsync(ApplicationUser user);
+
+        Task<bool> UpdateUserRoleAsync(Guid userId, string role, bool removingRole = false);
+        Task<bool> DeleteUserAsync(Guid userId);
     }
 }

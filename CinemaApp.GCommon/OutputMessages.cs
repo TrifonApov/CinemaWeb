@@ -48,6 +48,11 @@
             public const string UserNotFoundMessage = "There is no such user";
             public const string UserAlreadyExistsMessage = "The user with email {0} already exists.";
             public const string UserCreationErrorMessage = "An error occured while creating the user.";
+            public const string UserRoleAssignmentIdentityErrorMessage = "An error occurred while assigning the role \"{0}\" to the user.";
+            public const string UserRoleAssignmentFailureMessage = "There was an error {1} role {0} to the user! Please review log information!";
+            public const string UserRoleRemoveIdentityErrorMessage = "There was an error removing role {0} from the user! Ensure that user and role exists and user is assigned to the role!";
+            public const string UserDeleteNotExistMessage = "There was an error deleting the user! Ensure that the user exists!";
+            public const string UserDeleteFailureErrorMessage = "There was an error deleting the user! Please review log information!";
             public static readonly string UserAgeBelowMinimum = $"You must be at least {MinimumAgeRequirement} years old to register.";
         }
     }

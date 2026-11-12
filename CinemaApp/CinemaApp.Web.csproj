@@ -4,6 +4,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <PreserveCompilationContext>true</PreserveCompilationContext>
     <UserSecretsId>aspnet-CinemaApp-fb67cf4f-5dd5-440c-aa61-357b7c80d9cd</UserSecretsId>
   </PropertyGroup>
 
